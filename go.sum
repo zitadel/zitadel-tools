@@ -36,6 +36,8 @@ github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym
 github.com/caos/logging v0.0.2/go.mod h1:9LKiDE2ChuGv6CHYif/kiugrfEXu9AwDiFWSreX7Wp0=
 github.com/caos/oidc v0.13.2 h1:52oP3KB1UrZuwraBTLuwM9ItRIhJQMYOm1J5uQ0sYXw=
 github.com/caos/oidc v0.13.2/go.mod h1:dLvfYUiAt9ORfl77L/KkcWuR/N0ll8Ry1nD2ERsamDY=
+github.com/caos/oidc v0.13.3 h1:C0DqGKMUigo16tlendmw2ti4IRdhcUNF4o1ZXGW1tFM=
+github.com/caos/oidc v0.13.3/go.mod h1:CPsubVrA110OyLnCKwVZjTdsAVwq67DTbYIvux7UgbY=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
