@@ -12,15 +12,15 @@ import (
 
 var (
 	keyPath    = flag.String("key", "", "path to the key.json")
-	issuer     = flag.String("issuer", "", "issuer where the token will be used (e.g. https://issuer.zitadel.ch)")
+	audience   = flag.String("audience", "", "audience where the token will be used (e.g. the issuer of zitadel.ch - https://issuer.zitadel.ch)")
 	outputPath = flag.String("output", "", "path where the generated jwt will be saved; will print to stdout if empty")
 )
 
 func main() {
 	flag.Parse()
 
-	if *keyPath == "" || *issuer == "" {
-		fmt.Println("Please provide at least an issuer and key param:")
+	if *keyPath == "" || *audience == "" {
+		fmt.Println("Please provide at least an audience and key param:")
 		flag.PrintDefaults()
 		return
 	}
@@ -30,7 +30,7 @@ func main() {
 		fmt.Printf("error reading key file: %v", err.Error())
 		return
 	}
-	assertion, err := oidc.NewJWTProfileAssertionFromFileData(key, []string{*issuer})
+	assertion, err := oidc.NewJWTProfileAssertionFromFileData(key, []string{*audience})
 	if err != nil {
 		fmt.Printf("error generating assertion: %v", err.Error())
 		return
