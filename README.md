@@ -2,7 +2,7 @@
 
 ## Usage
 
-key2jwt requires to flags (and will print result in stdout):
+key2jwt requires two flags (and will print result in stdout):
 - audience: where the assertion is going to be used (e.g. https://issuer.zitadel.ch)
 - key: the path to the key.json
 
@@ -10,7 +10,7 @@ key2jwt requires to flags (and will print result in stdout):
 ./key2jwt -audience=https://issuer.zitadel.ch -key=key.json
 ```
 
-Optinally you can pass an `output` flag. This will save the jwt in the provided file path:
+Optionally you can pass an `output` flag. This will save the jwt in the provided file path:
 
 ```
 ./key2jwt -audience=https://issuer.zitadel.ch -key=key.json -output=jwt.txt
