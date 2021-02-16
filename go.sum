@@ -38,6 +38,8 @@ github.com/caos/oidc v0.13.2 h1:52oP3KB1UrZuwraBTLuwM9ItRIhJQMYOm1J5uQ0sYXw=
 github.com/caos/oidc v0.13.2/go.mod h1:dLvfYUiAt9ORfl77L/KkcWuR/N0ll8Ry1nD2ERsamDY=
 github.com/caos/oidc v0.13.3 h1:C0DqGKMUigo16tlendmw2ti4IRdhcUNF4o1ZXGW1tFM=
 github.com/caos/oidc v0.13.3/go.mod h1:CPsubVrA110OyLnCKwVZjTdsAVwq67DTbYIvux7UgbY=
+github.com/caos/oidc v0.14.0 h1:l7mTqYDpqNRZF9Vwzq5KAQd1wQCThdceL5HpsEMGoao=
+github.com/caos/oidc v0.14.0/go.mod h1:CPsubVrA110OyLnCKwVZjTdsAVwq67DTbYIvux7UgbY=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
@@ -142,6 +144,7 @@ github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXf
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
 github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd0=
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
+github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
