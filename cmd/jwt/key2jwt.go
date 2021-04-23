@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/caos/oidc/pkg/oidc"
-	"github.com/caos/oidc/pkg/rp"
 )
 
 var (
@@ -30,14 +29,9 @@ func main() {
 		fmt.Printf("error reading key file: %v", err.Error())
 		return
 	}
-	assertion, err := oidc.NewJWTProfileAssertionFromFileData(key, []string{*audience})
+	jwt, err := oidc.NewJWTProfileAssertionStringFromFileData(key, []string{*audience})
 	if err != nil {
-		fmt.Printf("error generating assertion: %v", err.Error())
-		return
-	}
-	jwt, err := rp.GenerateJWTProfileToken(assertion)
-	if err != nil {
-		fmt.Printf("error generating key: %v", err.Error())
+		fmt.Printf("error generating jwt: %v", err.Error())
 		return
 	}
 	f := os.Stdout
