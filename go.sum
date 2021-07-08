@@ -34,8 +34,8 @@ dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/caos/logging v0.0.2/go.mod h1:9LKiDE2ChuGv6CHYif/kiugrfEXu9AwDiFWSreX7Wp0=
-github.com/caos/oidc v0.15.3 h1:DNzzvSgUbhUewrZKOVF9nDop0AfMy0wjnMy/rD9f8xA=
-github.com/caos/oidc v0.15.3/go.mod h1:doQ1B/mGnQWbgS+UOANIQCPJe1+KACyxQ8wjV2d11h0=
+github.com/caos/oidc v0.15.5 h1:0u21eaeBx5ltinRk89IWLDXCGFVVLiRGltsUU+DF7d0=
+github.com/caos/oidc v0.15.5/go.mod h1:doQ1B/mGnQWbgS+UOANIQCPJe1+KACyxQ8wjV2d11h0=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
