@@ -1,11 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"time"
 
+	"github.com/caos/oidc/pkg/client"
 	"github.com/caos/oidc/pkg/oidc"
 )
 
@@ -29,7 +32,7 @@ func main() {
 		fmt.Printf("error reading key file: %v", err.Error())
 		return
 	}
-	jwt, err := oidc.NewJWTProfileAssertionStringFromFileData(key, []string{*audience})
+	jwt, err := generateJWT(key)
 	if err != nil {
 		fmt.Printf("error generating jwt: %v", err.Error())
 		return
@@ -50,4 +53,42 @@ func main() {
 		fmt.Printf("error writing key: %v", err.Error())
 		return
 	}
+}
+
+func generateJWT(key []byte) (string, error) {
+	keyType, err := getType(key)
+	if err != nil {
+		return "", err
+	}
+	switch keyType {
+	case "application":
+		keyData, err := client.ConfigFromKeyFile(*keyPath)
+		if err != nil {
+			return "", err
+		}
+		signer, err := client.NewSignerFromPrivateKeyByte([]byte(keyData.Key), keyData.KeyID)
+		if err != nil {
+			return "", err
+		}
+		return client.SignedJWTProfileAssertion(keyData.ClientID, []string{*audience}, time.Hour, signer)
+	case "serviceaccount":
+		jwta, err := oidc.NewJWTProfileAssertionFromFileData(key, []string{*audience})
+		if err != nil {
+			return "", err
+		}
+		return oidc.GenerateJWTProfileToken(jwta)
+	default:
+		return "", fmt.Errorf("unsupported key type")
+	}
+}
+
+func getType(data []byte) (string, error) {
+	keyData := new(struct {
+		Type string `json:"type"` // serviceaccount or application
+	})
+	err := json.Unmarshal(data, keyData)
+	if err != nil {
+		return "", err
+	}
+	return keyData.Type, nil
 }
