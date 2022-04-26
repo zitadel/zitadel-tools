@@ -1,5 +1,5 @@
-module github.com/caos/zitadel-tools
+module github.com/zitadel/zitadel-tools
 
 go 1.15
 
-require github.com/caos/oidc v1.3.0
+require github.com/zitadel/oidc v1.3.0

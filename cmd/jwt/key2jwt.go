@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/caos/oidc/pkg/client"
-	"github.com/caos/oidc/pkg/oidc"
+	"github.com/zitadel/oidc/pkg/client"
+	"github.com/zitadel/oidc/pkg/oidc"
 )
 
 var (
