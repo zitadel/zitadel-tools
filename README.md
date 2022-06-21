@@ -23,15 +23,16 @@ Optionally you can pass an `output` flag. This will save the jwt in the provided
 
 ## basicauth
 
-Convert Client ID and secret to be used in Authentication Header for [Client Secret Basic](https://docs.zitadel.com/docs/apis/openidoauth/authn-methods#client-secret-basic)
+Convert *client ID* and *client secret* to be used in *Authorization* header for [Client Secret Basic](https://docs.zitadel.com/docs/apis/openidoauth/authn-methods#client-secret-basic)
 
 ### Usage
 
-basicauth requires two flags (and will print result in stdout):
+basicauth requires two flags:
 
 - id: client id
 - secret: client secret
 
+The tool prints the URL- and Base64 encoded result to standard output
 ```zsh
-./basicauth -id $CLIENT_ID -secret $CLIENT_SECRET
+go run ./cmd/basicauth/*.go -id $CLIENT_ID -secret $CLIENT_SECRET
 ```

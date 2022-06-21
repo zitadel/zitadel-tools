@@ -25,5 +25,5 @@ func main() {
 
 	sEnc := b64.StdEncoding.EncodeToString([]byte(sEscaped))
 
-	fmt.Println(sEnc)
+	fmt.Print(sEnc)
 }
