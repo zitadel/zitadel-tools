@@ -16,9 +16,8 @@ func main() {
 	flag.Parse()
 
 	if *clientId == "" || *clientSecret == "" {
-		fmt.Println("Please provide a client ID and secret:")
 		flag.PrintDefaults()
-		return
+		panic("please provide a client ID and secret")
 	}
 
 	sEscaped := url.QueryEscape(*clientId) + ":" + url.QueryEscape(*clientSecret)
