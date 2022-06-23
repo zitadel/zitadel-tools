@@ -6,19 +6,21 @@ Convert a *key file* to *jwt token*
 
 ### Usage
 
-key2jwt requires two flags (and will print result in stdout):
+key2jwt requires two flags:
 
 - audience: where the assertion is going to be used (e.g. https://issuer.zitadel.ch)
 - key: the path to the key.json
 
+The tool prints the result to standard output.
+
 ```zsh
-./key2jwt -audience=https://issuer.zitadel.ch -key=key.json
+go run ./cmd/jwt/*.go -audience=https://issuer.zitadel.ch -key=key.json
 ```
 
 Optionally you can pass an `output` flag. This will save the jwt in the provided file path:
 
 ```zsh
-./key2jwt -audience=https://issuer.zitadel.ch -key=key.json -output=jwt.txt
+go run ./cmd/jwt/*.go -audience=https://issuer.zitadel.ch -key=key.json -output=jwt.txt
 ```
 
 ## basicauth
