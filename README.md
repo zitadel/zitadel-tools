@@ -23,6 +23,11 @@ Optionally you can pass an `output` flag. This will save the jwt in the provided
 go run ./cmd/jwt/*.go -audience=https://issuer.zitadel.ch -key=key.json -output=jwt.txt
 ```
 
+You can also create a JWT by providing a RSA private key (.pem file). You then also need to specify the issuer of the token:
+```zsh
+go run ./cmd/jwt/*.go -audience=https://issuer.zitadel.ch -key=key.pem -issuer=client_id
+```
+
 ## basicauth
 
 Convert *client ID* and *client secret* to be used in *Authorization* header for [Client Secret Basic](https://docs.zitadel.com/docs/apis/openidoauth/authn-methods#client-secret-basic)
