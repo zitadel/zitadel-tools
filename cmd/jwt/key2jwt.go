@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/zitadel/oidc/pkg/client"
@@ -13,8 +14,9 @@ import (
 )
 
 var (
-	keyPath    = flag.String("key", "", "path to the key.json")
+	keyPath    = flag.String("key", "", "path to the key.json / rsa private key.pem")
 	audience   = flag.String("audience", "", "audience where the token will be used (e.g. the issuer of zitadel.ch - https://issuer.zitadel.ch)")
+	issuer     = flag.String("issuer", "", "issuer of the JWT (userID / client_id")
 	outputPath = flag.String("output", "", "path where the generated jwt will be saved; will print to stdout if empty")
 )
 
@@ -32,7 +34,20 @@ func main() {
 		fmt.Printf("error reading key file: %v", err.Error())
 		return
 	}
-	jwt, err := generateJWT(key)
+	var jwt string
+	switch ext := filepath.Ext(*keyPath); ext {
+	case ".json":
+		jwt, err = generateJWTFromJSON(key)
+	case ".pem":
+		if *issuer == "" {
+			fmt.Println("Please provide the issuer of token when using a pem file")
+			return
+		}
+		jwt, err = generateJWTFromPEM(key, *issuer)
+	default:
+		fmt.Printf("file extension %v is not supported, please provide either a json or pem file\n", ext)
+		return
+	}
 	if err != nil {
 		fmt.Printf("error generating jwt: %v", err.Error())
 		return
@@ -55,7 +70,7 @@ func main() {
 	}
 }
 
-func generateJWT(key []byte) (string, error) {
+func generateJWTFromJSON(key []byte) (string, error) {
 	keyType, err := getType(key)
 	if err != nil {
 		return "", err
@@ -80,6 +95,14 @@ func generateJWT(key []byte) (string, error) {
 	default:
 		return "", fmt.Errorf("unsupported key type")
 	}
+}
+
+func generateJWTFromPEM(key []byte, issuer string) (string, error) {
+	signer, err := client.NewSignerFromPrivateKeyByte(key, "")
+	if err != nil {
+		return "", err
+	}
+	return client.SignedJWTProfileAssertion(issuer, []string{*audience}, time.Hour, signer)
 }
 
 func getType(data []byte) (string, error) {
