@@ -8,19 +8,24 @@ Convert a *key file* to *jwt token*
 
 key2jwt requires two flags:
 
-- audience: where the assertion is going to be used (e.g. https://issuer.zitadel.ch)
+- audience: where the assertion is going to be used (e.g. https://zitadel.cloud or https://<your domain>)
 - key: the path to the key.json
 
 The tool prints the result to standard output.
 
 ```zsh
-go run ./cmd/jwt/*.go -audience=https://issuer.zitadel.ch -key=key.json
+./key2jwt -audience=https://zitadel.cloud -key=key.json
 ```
 
 Optionally you can pass an `output` flag. This will save the jwt in the provided file path:
 
 ```zsh
-go run ./cmd/jwt/*.go -audience=https://issuer.zitadel.ch -key=key.json -output=jwt.txt
+./key2jwt -audience=https://zitadel.cloud -key=key.json -output=jwt.txt
+```
+
+You can also create a JWT by providing a RSA private key (.pem file). You then also need to specify the issuer of the token:
+```zsh
+./key2jwt -audience=https://zitadel.cloud -key=key.pem -issuer=client_id
 ```
 
 ## basicauth
