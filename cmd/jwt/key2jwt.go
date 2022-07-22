@@ -15,7 +15,7 @@ import (
 
 var (
 	keyPath    = flag.String("key", "", "path to the key.json / RSA private key.pem")
-	audience   = flag.String("audience", "", "audience where the token will be used (e.g. the issuer of zitadel.ch - https://issuer.zitadel.ch)")
+	audience   = flag.String("audience", "", "audience where the token will be used (e.g. the issuer of zitadel.cloud - https://zitadel.cloud or from your domain https://<your domain>)")
 	issuer     = flag.String("issuer", "", "issuer of the JWT (e.g. userID / client_id; only needed when generating from RSA private key)")
 	outputPath = flag.String("output", "", "path where the generated jwt will be saved; will print to stdout if empty")
 )
