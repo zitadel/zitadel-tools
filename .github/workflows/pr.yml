@@ -1,10 +1,7 @@
 name: Release
 
 on:
-  push:
-    tags-ignore:
-      - "*"
-  workflow_dispatch:
+  pull_request:
 
 jobs:
   build:
@@ -34,20 +31,3 @@ jobs:
         with:
           file: ./profile.cov
           name: go-codecov
-      - name: Tag
-        id: semantic
-        uses: cycjimmy/semantic-release-action@v2
-        with:
-          dry_run: false
-          semantic_version: 19.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v3
-        if: steps.semantic.outputs.new_release_published == 'true' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-        with:
-          version: latest
-          args: release --rm-dist
-          workdir: ./cmd/jwt/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
