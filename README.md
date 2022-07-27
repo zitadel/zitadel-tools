@@ -8,7 +8,7 @@ Convert a *key file* to *jwt token*
 
 key2jwt requires two flags:
 
-- audience: where the assertion is going to be used (e.g. https://zitadel.cloud or https://<your domain>)
+- audience: where the assertion is going to be used (e.g. https://zitadel.cloud or https://{your domain})
 - key: the path to the key.json
 
 The tool prints the result to standard output.
