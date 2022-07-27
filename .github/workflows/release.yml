@@ -28,7 +28,12 @@ jobs:
       - name: Tests
         run: |
           go mod download
-          go test -v ./...
+          go test -race -v -coverprofile=profile.cov ./...
+      - name: Publish go coverage
+        uses: codecov/codecov-action@v3.1.0
+        with:
+          file: ./profile.cov
+          name: go-codecov
       - name: Tag
         id: semantic
         uses: cycjimmy/semantic-release-action@v2
