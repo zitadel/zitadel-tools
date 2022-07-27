@@ -29,11 +29,6 @@ jobs:
         run: |
           go mod download
           go test -v ./...
-  release:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
       - name: Tag
         id: semantic
         uses: cycjimmy/semantic-release-action@v2
