@@ -2,7 +2,7 @@ module github.com/zitadel/zitadel-tools
 
 go 1.17
 
-require github.com/zitadel/oidc v1.8.0
+require github.com/zitadel/oidc v1.9.0
 
 require (
 	github.com/golang/protobuf v1.4.2 // indirect
