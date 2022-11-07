@@ -60,7 +60,7 @@ func main() {
 			return
 		}
 	}
-	_, err = f.Write([]byte(jwt))
+	_, err = fmt.Fprintln(f, jwt)
 	if errClose := f.Close(); err == nil {
 		err = errClose
 	}
