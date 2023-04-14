@@ -1,0 +1,69 @@
+{
+  "timeout": "10m",
+  "data_orgs": {
+    "orgs": [
+      {
+        "orgId": "191279307643945217",
+        "org": {
+          "name": "TestOrg"
+        },
+        "humanUsers": [
+          {
+            "user": {
+              "userName": "test9@test9",
+              "profile": {
+                "firstName": "Road",
+                "lastName": "Runner",
+                "displayName": "Road Runner",
+                "preferredLanguage": "de"
+              },
+              "email": {
+                "email": "test@acme.tld",
+                "isEmailVerified": true
+              },
+              "hashedPassword": {
+                "value": "$2a$14$aPbwhMVJSVrRRW2NoM/5.esSJO6o/EIGzGxWiM5SAEZlGqCsr9DAK",
+                "algorithm": "bcrypt"
+              }
+            }
+          },
+          {
+            "userId": "120080115081209416",
+            "user": {
+              "userName": "testuser",
+              "profile": {
+                "firstName": "Test",
+                "lastName": "User",
+                "displayName": "Test User",
+                "preferredLanguage": "und"
+              },
+              "email": {
+                "email": "fabienne@caos.ch",
+                "isEmailVerified": true
+              },
+              "hashedPassword": {
+                "value": "$2a$14$785Fcdbpo9rn5L7E21nIAOJvGCPgWFrZhIAIfDonYXzWuZIKRAQkO",
+                "algorithm": "bcrypt"
+              }
+            }
+          },
+          {
+            "userId": "145195347319252359",
+            "user": {
+              "userName": "wile@test9",
+              "profile": {
+                "firstName": "Wile E.",
+                "lastName": "Coyote",
+                "displayName": "Wile E. Coyote",
+                "preferredLanguage": "en"
+              },
+              "email": {
+                "email": "wile.e@acme.tld"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
