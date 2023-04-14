@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	//admin_pb "github.com/zitadel/zitadel"
 )
 
 type User struct {
@@ -13,10 +14,14 @@ type User struct {
 	Name   string `json:"name"`
 }
 
+type Passwords struct {
+	ID Password `json:"_ID"`
+}
+
 type Password struct {
-	UserId string
-	Email  string
-	Name   string
+	Oid          string `json:"$oid"`
+	Email        string `json:"email"`
+	PasswordHash string `json:"passwordHash"`
 }
 
 func main() {
@@ -27,6 +32,12 @@ func main() {
 	}
 	fmt.Printf("Users: %v", users)
 
+	passwords, pwerr := ReadAuth0UPasswords("passwords.json")
+	if err != nil {
+		fmt.Printf("ERROR: %v", pwerr)
+		return
+	}
+	fmt.Printf("Passwords: %v", passwords)
 }
 
 func ReadAuth0Users(filename string) ([]User, error) {
@@ -37,6 +48,24 @@ func ReadAuth0Users(filename string) ([]User, error) {
 	var result []User
 	for fileScanner.Scan() {
 		data := User{}
+		err = json.Unmarshal(fileScanner.Bytes(), &data)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, data)
+	}
+	file.Close()
+	return result, nil
+}
+
+func ReadAuth0UPasswords(filename string) ([]Password, error) {
+	file, fileScanner, err := ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	var result []Password
+	for fileScanner.Scan() {
+		data := Password{}
 		err = json.Unmarshal(fileScanner.Bytes(), &data)
 		if err != nil {
 			return nil, err
@@ -59,3 +88,14 @@ func ReadFile(filename string) (*os.File, *bufio.Scanner, error) {
 
 	return readFile, fileScanner, nil
 }
+
+//
+//func CreateZITADELMigration() {
+//		keyboard := &admin_pb.ImportDataOrg{
+//		Layout:  randomKeyboardLayout(),
+//		Backlit: randomBool(),
+//	}
+//
+//		return keyboard
+//	}
+//}
