@@ -24,10 +24,6 @@ type User struct {
 	Name   string `json:"name"`
 }
 
-type Passwords struct {
-	ID Password `json:"_ID"`
-}
-
 type Password struct {
 	Oid          string `json:"oid"`
 	Email        string `json:"email"`
@@ -40,17 +36,14 @@ func main() {
 		fmt.Printf("ERROR: %v", err)
 		return
 	}
-	fmt.Printf("Users: %v", users)
 
 	passwords, pwerr := ReadAuth0UPasswords("passwords.json")
 	if err != nil {
 		fmt.Printf("ERROR: %v", pwerr)
 		return
 	}
-	fmt.Printf("Passwords: %v", passwords)
 
 	importData := CreateZITADELMigration(ORG_ID, users, passwords)
-	fmt.Printf("Import: %v", importData)
 
 	err = WriteProtoToFile("importBody.json", importData)
 	if err != nil {
