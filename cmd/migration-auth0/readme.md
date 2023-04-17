@@ -8,3 +8,6 @@ With this example an organization in ZITADEL has to be existing and only the use
 
 You will now get a new file importBody.json
 Copy the content from the file and send it as body in the import to ZITADEL
+
+For a more detailed description of the whole migration steps from Auth0 to ZITADEL please visit out Documentation:
+https://zitadel.com/docs/guides/migrate/sources/auth0
