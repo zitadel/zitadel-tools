@@ -24,10 +24,6 @@ type User struct {
 	Name   string `json:"name"`
 }
 
-type Passwords struct {
-	ID Password `json:"_ID"`
-}
-
 type Password struct {
 	Oid          string `json:"oid"`
 	Email        string `json:"email"`
