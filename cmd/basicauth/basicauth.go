@@ -1,28 +1,43 @@
-package main
+package basicauth
 
 import (
 	b64 "encoding/base64"
-	"flag"
 	"fmt"
+	"log"
 	"net/url"
+
+	"github.com/spf13/cobra"
 )
+
+// Cmd represents the basicauth command
+var Cmd = &cobra.Command{
+	Use:   "basicauth",
+	Short: "Convert <client ID> and <client secret> to be used in Authorization header for Client Secret Basic",
+	Run: func(cmd *cobra.Command, args []string) {
+		basicAuth(cmd)
+	},
+}
 
 var (
-	clientId     = flag.String("id", "", "Client ID as string")
-	clientSecret = flag.String("secret", "", "Client secret as string")
+	clientId     string
+	clientSecret string
 )
 
-func main() {
-	flag.Parse()
+func init() {
+	Cmd.Flags().StringVar(&clientId, "id", "", "Client ID as string")
+	Cmd.Flags().StringVar(&clientSecret, "secret", "", "Client secret as string")
+}
 
-	if *clientId == "" || *clientSecret == "" {
-		flag.PrintDefaults()
-		panic("please provide a client ID and secret")
+func basicAuth(cmd *cobra.Command) {
+	if clientId == "" || clientSecret == "" {
+		log.Println("please provide a client ID and secret")
+		fmt.Println(cmd.Flags().FlagUsages())
+		return
 	}
 
-	sEscaped := url.QueryEscape(*clientId) + ":" + url.QueryEscape(*clientSecret)
+	sEscaped := url.QueryEscape(clientId) + ":" + url.QueryEscape(clientSecret)
 
 	sEnc := b64.StdEncoding.EncodeToString([]byte(sEscaped))
 
-	fmt.Print(sEnc)
+	fmt.Println(sEnc)
 }
