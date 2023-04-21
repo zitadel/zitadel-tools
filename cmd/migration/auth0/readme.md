@@ -4,16 +4,20 @@ With this example an organization in ZITADEL has to be existing and only the use
 The migration requires the following input:
  - organisation id (--org)
  - users.json file with your exported Auth0 users (--users; default is ./users.json)
- - password.json file with the exported Auth0 bcrypt passwords (--password; default is ./passwords.json)
+ - password.json file with the exported Auth0 bcrypt passwords (--passwords; default is ./passwords.json)
 
 Execute the transformation and provide at least the organisation id:
 ```bash
 ./zitadel-tools migrate auth0 --org=<organisation id>
 ```
 
-you can also specify custom path for the users, passwords and output JSON files:
+You can specify additional parameters:
+ - output path (--output; default is ./importBody.json)
+ - timeout for the import data request (--timeout; default is 30m)
+ - pretty print the output JSON (--multiline)
+
 ```bash
-./zitadel-tools migrate auth0 --org=<organisation id> --users=./users.json --password=./passwords.json --output=./importBody.json
+./zitadel-tools migrate auth0 --org=<organisation id> --users=./users.json --passwords=./passwords.json --output=./importBody.json --timeout=1h --multiline
 ```
 
 You will now get a new file importBody.json
