@@ -1,20 +1,47 @@
-package main
+package auth0
 
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/spf13/cobra"
 	"github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/admin"
 	"github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/management"
 	v1 "github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
+// Cmd represents the auth0 migration command
+var Cmd = &cobra.Command{
+	Use:   "auth0",
+	Short: "Transform the exported Auth0 users and passwords to a ZITADEL import JSON",
+	Run: func(cmd *cobra.Command, args []string) {
+		migrate()
+	},
+}
+
+var (
+	userPath       string
+	passwordPath   string
+	outputPath     string
+	organisationID string
+	verifiedEmails bool
+	multiLine      bool
+)
+
+func init() {
+	Cmd.Flags().StringVar(&userPath, "users", "./users.json", "path to the users.json")
+	Cmd.Flags().StringVar(&passwordPath, "passwords", "./passwords.json", "path to the passwords.json")
+	Cmd.Flags().StringVar(&outputPath, "output", "./importBody.json", "path where the generated json will be saved")
+	Cmd.Flags().StringVar(&organisationID, "org", "", "id of the ZITADEL organisation, where the users will be imported")
+	Cmd.Flags().BoolVar(&verifiedEmails, "email-verified", true, "specify if imported emails are automatically verified (default)")
+	Cmd.Flags().BoolVar(&multiLine, "multiline", false, "print the JSON output in multiple lines")
+}
+
 const (
-	ORG_ID    = "189964076015681793"
 	Algorithm = "bcrypt"
 )
 
@@ -30,27 +57,29 @@ type Password struct {
 	PasswordHash string `json:"passwordHash"`
 }
 
-func main() {
-	users, err := ReadAuth0Users("users.json")
+func migrate() {
+	if organisationID == "" {
+		log.Fatal("Please provide the organisation id")
+	}
+	log.Printf("migrate auth0 from users(%s) and passwords(%s) into %s\n", userPath, passwordPath, outputPath)
+
+	users, err := ReadAuth0Users(userPath)
 	if err != nil {
-		fmt.Printf("ERROR: %v", err)
-		return
+		log.Fatalf("ERROR: %v", err)
 	}
 
-	passwords, pwerr := ReadAuth0UPasswords("passwords.json")
+	passwords, pwerr := ReadAuth0UPasswords(passwordPath)
 	if err != nil {
-		fmt.Printf("ERROR: %v", pwerr)
-		return
+		log.Fatalf("ERROR: %v", pwerr)
 	}
 
-	importData := CreateZITADELMigration(ORG_ID, users, passwords)
+	importData := CreateZITADELMigration(organisationID, users, passwords)
 
-	err = WriteProtoToFile("importBody.json", importData)
+	err = WriteProtoToFile(outputPath, importData)
 	if err != nil {
-		fmt.Printf("ERROR: %v", pwerr)
-		return
+		log.Fatalf("ERROR: %v", pwerr)
 	}
-	fmt.Println("Import file done")
+	log.Println("Import file done")
 }
 
 func ReadAuth0Users(filename string) ([]User, error) {
@@ -58,6 +87,8 @@ func ReadAuth0Users(filename string) ([]User, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer file.Close()
+
 	var result []User
 	for fileScanner.Scan() {
 		data := User{}
@@ -67,7 +98,6 @@ func ReadAuth0Users(filename string) ([]User, error) {
 		}
 		result = append(result, data)
 	}
-	file.Close()
 	return result, nil
 }
 
@@ -76,6 +106,8 @@ func ReadAuth0UPasswords(filename string) ([]Password, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer file.Close()
+
 	var result []Password
 	for fileScanner.Scan() {
 		data := Password{}
@@ -85,15 +117,12 @@ func ReadAuth0UPasswords(filename string) ([]Password, error) {
 		}
 		result = append(result, data)
 	}
-	file.Close()
 	return result, nil
 }
 
 func ReadFile(filename string) (*os.File, *bufio.Scanner, error) {
 	readFile, err := os.Open(filename)
-
 	if err != nil {
-		fmt.Println(err)
 		return nil, nil, err
 	}
 	fileScanner := bufio.NewScanner(readFile)
@@ -121,10 +150,11 @@ func WriteProtoToFile(filepath string, importData *admin.ImportDataRequest) erro
 	if err != nil {
 		return err
 	}
+	defer outFile.Close()
 
 	jsonpb := &runtime.JSONPb{
-		UnmarshalOptions: protojson.UnmarshalOptions{
-			DiscardUnknown: true,
+		MarshalOptions: protojson.MarshalOptions{
+			Multiline: multiLine,
 		},
 	}
 	encodedData, err := jsonpb.Marshal(importData)
@@ -143,12 +173,12 @@ func WriteProtoToFile(filepath string, importData *admin.ImportDataRequest) erro
 func createOrgs(id string, users []User, passwords []Password) []*admin.DataOrg {
 	org := &admin.DataOrg{
 		OrgId:      id,
-		HumanUsers: createHumanUsers(true, users, passwords),
+		HumanUsers: createHumanUsers(users, passwords),
 	}
 	return []*admin.DataOrg{org}
 }
 
-func createHumanUsers(emailVerified bool, users []User, passwords []Password) []*v1.DataHumanUser {
+func createHumanUsers(users []User, passwords []Password) []*v1.DataHumanUser {
 	result := make([]*v1.DataHumanUser, 0)
 	for _, u := range users {
 		user := &v1.DataHumanUser{
@@ -160,7 +190,7 @@ func createHumanUsers(emailVerified bool, users []User, passwords []Password) []
 				},
 				Email: &management.ImportHumanUserRequest_Email{
 					Email:           u.Email,
-					IsEmailVerified: emailVerified,
+					IsEmailVerified: verifiedEmails,
 				},
 			},
 		}

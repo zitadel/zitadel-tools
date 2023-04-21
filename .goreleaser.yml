@@ -1,4 +1,4 @@
-project_name: key2jwt
+project_name: zitadel-tools
 
 builds:
   - env:

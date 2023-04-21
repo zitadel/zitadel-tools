@@ -14,18 +14,18 @@ key2jwt requires two flags:
 The tool prints the result to standard output.
 
 ```zsh
-./key2jwt -audience=https://zitadel.cloud -key=key.json
+./zitadel-tools key2jwt -audience=https://zitadel.cloud -key=key.json
 ```
 
 Optionally you can pass an `output` flag. This will save the jwt in the provided file path:
 
 ```zsh
-./key2jwt -audience=https://zitadel.cloud -key=key.json -output=jwt.txt
+./zitadel-tools key2jwt -audience=https://zitadel.cloud -key=key.json -output=jwt.txt
 ```
 
 You can also create a JWT by providing a RSA private key (.pem file). You then also need to specify the issuer of the token:
 ```zsh
-./key2jwt -audience=https://zitadel.cloud -key=key.pem -issuer=client_id
+./zitadel-tools key2jwt -audience=https://zitadel.cloud -key=key.pem -issuer=client_id
 ```
 
 ## basicauth
@@ -42,5 +42,9 @@ basicauth requires two flags:
 The tool prints the URL- and Base64 encoded result to standard output
 
 ```zsh
-go run ./cmd/basicauth/*.go -id $CLIENT_ID -secret $CLIENT_SECRET
+./zitadel-tools basicauth -id $CLIENT_ID -secret $CLIENT_SECRET
 ```
+
+## Migrate data (e.g. Auth0) to ZITADEL import
+
+Please check the description in the [migration section](./cmd/migration/auth0).
