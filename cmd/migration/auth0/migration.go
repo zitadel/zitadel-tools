@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/spf13/cobra"
@@ -28,6 +29,7 @@ var (
 	passwordPath   string
 	outputPath     string
 	organisationID string
+	timeout        time.Duration
 	verifiedEmails bool
 	multiLine      bool
 )
@@ -37,6 +39,7 @@ func init() {
 	Cmd.Flags().StringVar(&passwordPath, "passwords", "./passwords.json", "path to the passwords.json")
 	Cmd.Flags().StringVar(&outputPath, "output", "./importBody.json", "path where the generated json will be saved")
 	Cmd.Flags().StringVar(&organisationID, "org", "", "id of the ZITADEL organisation, where the users will be imported")
+	Cmd.Flags().DurationVar(&timeout, "timeout", 30*time.Minute, "maximum duration to be used for the import")
 	Cmd.Flags().BoolVar(&verifiedEmails, "email-verified", true, "specify if imported emails are automatically verified (default)")
 	Cmd.Flags().BoolVar(&multiLine, "multiline", false, "print the JSON output in multiple lines")
 }
@@ -136,7 +139,7 @@ func CreateZITADELMigration(orgID string, users []User, passwords []Password) *a
 		Orgs: createOrgs(orgID, users, passwords),
 	}
 	importData := &admin.ImportDataRequest{
-		Timeout: "30m",
+		Timeout: timeout.String(),
 		Data: &admin.ImportDataRequest_DataOrgs{
 			DataOrgs: importDataOrg,
 		},
