@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/spf13/cobra v1.7.0
-	github.com/zitadel/oidc v1.13.2
+	github.com/zitadel/oidc v1.13.4
 	github.com/zitadel/zitadel-go/v2 v2.0.12
 	google.golang.org/protobuf v1.30.0
 )
