@@ -26,7 +26,7 @@ zitadel-tools key2jwt --audience=https://zitadel.cloud --key=key.json
 Optionally you can pass an `output` flag. This will save the jwt in the provided file path:
 
 ```zsh
-zitadel-tools key2jwt --audience=https://zitadel.cloud -key=key.json --output=jwt.txt
+zitadel-tools key2jwt --audience=https://zitadel.cloud --key=key.json --output=jwt.txt
 ```
 
 You can also create a JWT by providing a RSA private key (.pem file). You then also need to specify the issuer of the token:
