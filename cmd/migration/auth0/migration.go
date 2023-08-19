@@ -44,10 +44,6 @@ func init() {
 	Cmd.Flags().BoolVar(&multiLine, "multiline", false, "print the JSON output in multiple lines")
 }
 
-const (
-	Algorithm = "bcrypt"
-)
-
 type User struct {
 	UserId string `json:"user_id"`
 	Email  string `json:"email"`
@@ -200,8 +196,7 @@ func createHumanUsers(users []User, passwords []Password) []*v1.DataHumanUser {
 		passwordHash := getPassword(u.Email, passwords)
 		if passwordHash != "" {
 			user.User.HashedPassword = &management.ImportHumanUserRequest_HashedPassword{
-				Value:     passwordHash,
-				Algorithm: Algorithm,
+				Value: passwordHash,
 			}
 		}
 		result = append(result, user)
