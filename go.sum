@@ -26,8 +26,8 @@ github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An
 github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
 github.com/zitadel/oidc v1.13.4 h1:+k2GKqP9Ld9S2MSFlj+KaNsoZ3J9oy+Ezw51EzSFuC8=
 github.com/zitadel/oidc v1.13.4/go.mod h1:3h2DhUcP02YV6q/CA/BG4yla0o6rXjK+DkJGK/dwJfw=
-github.com/zitadel/zitadel-go/v2 v2.0.18 h1:PzDDJdZ5sCshm6v7WineVXREneRWyBqjDtHpSZ+HjNc=
-github.com/zitadel/zitadel-go/v2 v2.0.18/go.mod h1:pCT8y65qnRqTDBFf7UT5+6NAsAdfjgQCfn4BQ6pMWZ0=
+github.com/zitadel/zitadel-go/v2 v2.0.19 h1:oLs2iLfPGqMLrgtzHoffnLBWHfk8JmTSXZFCXRgb+YM=
+github.com/zitadel/zitadel-go/v2 v2.0.19/go.mod h1:pCT8y65qnRqTDBFf7UT5+6NAsAdfjgQCfn4BQ6pMWZ0=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.13.0 h1:mvySKfSWJ+UKUii46M40LOvyWfN0s2U+46/jDd0e6Ck=
 golang.org/x/crypto v0.13.0/go.mod h1:y6Z2r+Rw4iayiXXAIxJIDAJ1zMW4yaTpebo8fPOliYc=
