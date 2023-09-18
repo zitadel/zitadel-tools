@@ -6,7 +6,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.0
 	github.com/spf13/cobra v1.7.0
 	github.com/zitadel/oidc v1.13.4
-	github.com/zitadel/zitadel-go/v2 v2.0.19
+	github.com/zitadel/zitadel-go/v2 v2.0.20
 	google.golang.org/protobuf v1.31.0
 )
 
