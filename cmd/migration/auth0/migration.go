@@ -1,210 +1,85 @@
 package auth0
 
 import (
-	"bufio"
-	"encoding/json"
+	"fmt"
 	"log"
-	"os"
-	"time"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/spf13/cobra"
-	"github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/admin"
-	"github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/management"
-	v1 "github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/v1"
-	"google.golang.org/protobuf/encoding/protojson"
+	"github.com/zitadel/zitadel-tools/internal/migration"
 )
 
 // Cmd represents the auth0 migration command
 var Cmd = &cobra.Command{
 	Use:   "auth0",
 	Short: "Transform the exported Auth0 users and passwords to a ZITADEL import JSON",
-	Run: func(cmd *cobra.Command, args []string) {
-		migrate()
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return migrate()
 	},
 }
 
 var (
-	userPath       string
-	passwordPath   string
-	outputPath     string
-	organisationID string
-	timeout        time.Duration
-	verifiedEmails bool
-	multiLine      bool
+	userPath     string
+	passwordPath string
 )
 
 func init() {
 	Cmd.Flags().StringVar(&userPath, "users", "./users.json", "path to the users.json")
 	Cmd.Flags().StringVar(&passwordPath, "passwords", "./passwords.json", "path to the passwords.json")
-	Cmd.Flags().StringVar(&outputPath, "output", "./importBody.json", "path where the generated json will be saved")
-	Cmd.Flags().StringVar(&organisationID, "org", "", "id of the ZITADEL organisation, where the users will be imported")
-	Cmd.Flags().DurationVar(&timeout, "timeout", 30*time.Minute, "maximum duration to be used for the import")
-	Cmd.Flags().BoolVar(&verifiedEmails, "email-verified", true, "specify if imported emails are automatically verified (default)")
-	Cmd.Flags().BoolVar(&multiLine, "multiline", false, "print the JSON output in multiple lines")
 }
 
-type User struct {
+type user struct {
 	UserId string `json:"user_id"`
 	Email  string `json:"email"`
 	Name   string `json:"name"`
 }
 
-type Password struct {
+type password struct {
 	Oid          string `json:"oid"`
 	Email        string `json:"email"`
 	PasswordHash string `json:"passwordHash"`
 }
 
-func migrate() {
-	if organisationID == "" {
-		log.Fatal("Please provide the organisation id")
-	}
-	log.Printf("migrate auth0 from users(%s) and passwords(%s) into %s\n", userPath, passwordPath, outputPath)
+func migrate() error {
+	log.Printf("migrate auth0 from users(%s) and passwords(%s) into %s\n", userPath, passwordPath, migration.OutputPath)
 
-	users, err := ReadAuth0Users(userPath)
+	users, err := migration.ReadJSONLinesFile[user](userPath)
 	if err != nil {
-		log.Fatalf("ERROR: %v", err)
+		return fmt.Errorf("read users: %w", err)
 	}
 
-	passwords, pwerr := ReadAuth0UPasswords(passwordPath)
+	passwords, err := migration.ReadJSONLinesFile[password](passwordPath)
 	if err != nil {
-		log.Fatalf("ERROR: %v", pwerr)
+		return fmt.Errorf("read passwords: %w", err)
 	}
 
-	importData := CreateZITADELMigration(organisationID, users, passwords)
+	importData := migration.CreateV1Migration(createHumanUsers(users, passwords))
 
-	err = WriteProtoToFile(outputPath, importData)
+	err = migration.WriteProtoToFile(importData)
 	if err != nil {
-		log.Fatalf("ERROR: %v", pwerr)
+		return err
 	}
 	log.Println("Import file done")
-}
-
-func ReadAuth0Users(filename string) ([]User, error) {
-	file, fileScanner, err := ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var result []User
-	for fileScanner.Scan() {
-		data := User{}
-		err = json.Unmarshal(fileScanner.Bytes(), &data)
-		if err != nil {
-			return nil, err
-		}
-		result = append(result, data)
-	}
-	return result, nil
-}
-
-func ReadAuth0UPasswords(filename string) ([]Password, error) {
-	file, fileScanner, err := ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	var result []Password
-	for fileScanner.Scan() {
-		data := Password{}
-		err = json.Unmarshal(fileScanner.Bytes(), &data)
-		if err != nil {
-			return nil, err
-		}
-		result = append(result, data)
-	}
-	return result, nil
-}
-
-func ReadFile(filename string) (*os.File, *bufio.Scanner, error) {
-	readFile, err := os.Open(filename)
-	if err != nil {
-		return nil, nil, err
-	}
-	fileScanner := bufio.NewScanner(readFile)
-	fileScanner.Split(bufio.ScanLines)
-
-	return readFile, fileScanner, nil
-}
-
-func CreateZITADELMigration(orgID string, users []User, passwords []Password) *admin.ImportDataRequest {
-	importDataOrg := &admin.ImportDataOrg{
-		Orgs: createOrgs(orgID, users, passwords),
-	}
-	importData := &admin.ImportDataRequest{
-		Timeout: timeout.String(),
-		Data: &admin.ImportDataRequest_DataOrgs{
-			DataOrgs: importDataOrg,
-		},
-	}
-
-	return importData
-}
-
-func WriteProtoToFile(filepath string, importData *admin.ImportDataRequest) error {
-	outFile, err := os.OpenFile(filepath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	if err != nil {
-		return err
-	}
-	defer outFile.Close()
-
-	jsonpb := &runtime.JSONPb{
-		MarshalOptions: protojson.MarshalOptions{
-			Multiline: multiLine,
-		},
-	}
-	encodedData, err := jsonpb.Marshal(importData)
-	if err != nil {
-		return err
-	}
-
-	// writing the actual transaction item to the file
-	if _, err := outFile.Write(encodedData); err != nil {
-		return err
-	}
-
 	return nil
 }
 
-func createOrgs(id string, users []User, passwords []Password) []*admin.DataOrg {
-	org := &admin.DataOrg{
-		OrgId:      id,
-		HumanUsers: createHumanUsers(users, passwords),
-	}
-	return []*admin.DataOrg{org}
-}
+func createHumanUsers(users []user, passwords []password) []migration.User {
+	result := make([]migration.User, len(users))
+	for i, u := range users {
+		result[i] = migration.User{
+			UserId:        u.UserId,
+			UserName:      u.Email,
+			FirstName:     u.Name,
+			LastName:      u.Name,
+			Email:         u.Email,
+			EmailVerified: migration.VerifiedEmails,
+			PasswordHash:  getPassword(u.Email, passwords),
+		}
 
-func createHumanUsers(users []User, passwords []Password) []*v1.DataHumanUser {
-	result := make([]*v1.DataHumanUser, 0)
-	for _, u := range users {
-		user := &v1.DataHumanUser{
-			User: &management.ImportHumanUserRequest{
-				UserName: u.Email,
-				Profile: &management.ImportHumanUserRequest_Profile{
-					FirstName: u.Name,
-					LastName:  u.Name,
-				},
-				Email: &management.ImportHumanUserRequest_Email{
-					Email:           u.Email,
-					IsEmailVerified: verifiedEmails,
-				},
-			},
-		}
-		passwordHash := getPassword(u.Email, passwords)
-		if passwordHash != "" {
-			user.User.HashedPassword = &management.ImportHumanUserRequest_HashedPassword{
-				Value: passwordHash,
-			}
-		}
-		result = append(result, user)
 	}
 	return result
 }
 
-func getPassword(userEmail string, passwords []Password) string {
+func getPassword(userEmail string, passwords []password) string {
 	for _, p := range passwords {
 		if userEmail == p.Email {
 			return p.PasswordHash
