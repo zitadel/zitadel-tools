@@ -26,8 +26,8 @@ github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An
 github.com/stretchr/testify v1.8.2 h1:+h33VjcLVPDHtOdpUCuF+7gSuG3yGIftsP1YvFihtJ8=
 github.com/zitadel/oidc v1.13.4 h1:+k2GKqP9Ld9S2MSFlj+KaNsoZ3J9oy+Ezw51EzSFuC8=
 github.com/zitadel/oidc v1.13.4/go.mod h1:3h2DhUcP02YV6q/CA/BG4yla0o6rXjK+DkJGK/dwJfw=
-github.com/zitadel/zitadel-go/v2 v2.0.20 h1:GKl43IkUQxll15d95Nqe89ZBuobQUlC7GOulLbnoQi4=
-github.com/zitadel/zitadel-go/v2 v2.0.20/go.mod h1:xO3LgQQDfzlCf17tqXphcgnPloH5YArrcd9mnTx4PkU=
+github.com/zitadel/zitadel-go/v2 v2.0.21 h1:P+m8rBReph8UhxrchSR0npthHTlwqmVHi8k8JI1q1ds=
+github.com/zitadel/zitadel-go/v2 v2.0.21/go.mod h1:1kHc4fpCjAHVAA13bZNrpxaAO83VaPnF8rzM157A9rQ=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.13.0 h1:mvySKfSWJ+UKUii46M40LOvyWfN0s2U+46/jDd0e6Ck=
 golang.org/x/crypto v0.13.0/go.mod h1:y6Z2r+Rw4iayiXXAIxJIDAJ1zMW4yaTpebo8fPOliYc=
@@ -53,8 +53,8 @@ google.golang.org/genproto/googleapis/api v0.0.0-20230822172742-b8732ec3820d h1:
 google.golang.org/genproto/googleapis/api v0.0.0-20230822172742-b8732ec3820d/go.mod h1:KjSP20unUpOx5kyQUFa7k4OJg0qeJ7DEZflGDu2p6Bk=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20230822172742-b8732ec3820d h1:uvYuEyMHKNt+lT4K3bN6fGswmK8qSvcreM3BwjDh+y4=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20230822172742-b8732ec3820d/go.mod h1:+Bk1OCOj40wS2hwAMA+aCW9ypzm63QTBBHp6lQ3p+9M=
-google.golang.org/grpc v1.58.0 h1:32JY8YpPMSR45K+c3o6b8VL73V+rR8k+DeMIr4vRH8o=
-google.golang.org/grpc v1.58.0/go.mod h1:tgX3ZQDlNJGU96V6yHh1T/JeoBQ2TXdr43YbYSsCJk0=
+google.golang.org/grpc v1.58.1 h1:OL+Vz23DTtrrldqHK49FUOPHyY75rvFqJfXC84NYW58=
+google.golang.org/grpc v1.58.1/go.mod h1:tgX3ZQDlNJGU96V6yHh1T/JeoBQ2TXdr43YbYSsCJk0=
 google.golang.org/protobuf v1.26.0-rc.1/go.mod h1:jlhhOSvTdKEhbULTjvd4ARK9grFBp09yW+WbY/TyQbw=
 google.golang.org/protobuf v1.26.0/go.mod h1:9q0QmTI4eRPtz6boOQmLYwt+qCgq0jsYwAQnmE0givc=
 google.golang.org/protobuf v1.31.0 h1:g0LDEJHgrBl9N9r17Ru3sqWhkIx2NB67okBHPwC7hs8=
