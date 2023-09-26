@@ -29,6 +29,65 @@ func TestMain(m *testing.M) {
 	os.Exit(res)
 }
 
+func TestReadJSONFile(t *testing.T) {
+	const jsonStream = `{"Name": "Ed", "Text": "Knock knock."}`
+
+	filename := filepath.Join(outDir, "test.json")
+	err := os.WriteFile(filename, []byte(jsonStream), 0666)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		err := os.Remove(filename)
+		require.NoError(t, err)
+	})
+
+	type m struct {
+		Name, Text string
+	}
+
+	type args struct {
+		name string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    *m
+		wantErr bool
+	}{
+		{
+			name: "invalid file",
+			args: args{
+				name: "foo",
+			},
+			wantErr: true,
+		},
+		{
+			name: "decoding error",
+			args: args{
+				name: "/dev/urandom",
+			},
+			wantErr: true,
+		},
+		{
+			name: "success",
+			args: args{
+				name: filename,
+			},
+			want: &m{Name: "Ed", Text: "Knock knock."},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ReadJSONFile[*m](tt.args.name)
+			if tt.wantErr {
+				assert.Error(t, err)
+				return
+			}
+			require.NoError(t, err)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
 func TestReadJSONLinesFile(t *testing.T) {
 	const jsonStream = `
 	{"Name": "Ed", "Text": "Knock knock."}

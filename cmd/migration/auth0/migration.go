@@ -18,13 +18,15 @@ var Cmd = &cobra.Command{
 }
 
 var (
-	userPath     string
-	passwordPath string
+	userPath       string
+	passwordPath   string
+	verifiedEmails bool
 )
 
 func init() {
 	Cmd.Flags().StringVar(&userPath, "users", "./users.json", "path to the users.json")
 	Cmd.Flags().StringVar(&passwordPath, "passwords", "./passwords.json", "path to the passwords.json")
+	Cmd.Flags().BoolVar(&verifiedEmails, "email-verified", true, "specify if imported emails are automatically verified")
 }
 
 type user struct {
@@ -71,7 +73,7 @@ func createHumanUsers(users []user, passwords []password) []migration.User {
 			FirstName:     u.Name,
 			LastName:      u.Name,
 			Email:         u.Email,
-			EmailVerified: migration.VerifiedEmails,
+			EmailVerified: verifiedEmails,
 			PasswordHash:  getPassword(u.Email, passwords),
 		}
 

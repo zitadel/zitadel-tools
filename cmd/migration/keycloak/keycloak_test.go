@@ -1,4 +1,4 @@
-package auth0
+package keycloak
 
 import (
 	"os"
@@ -14,8 +14,7 @@ import (
 const dataDir = "example-data"
 
 var (
-	userFile      = filepath.Join(dataDir, "users.json")
-	passwordFile  = filepath.Join(dataDir, "passwords.json")
+	realmFile     = filepath.Join(dataDir, "realm.json")
 	referenceFile = filepath.Join(dataDir, "referenceOutput.json")
 	outDir        string
 )
@@ -40,8 +39,7 @@ func Test_migrate(t *testing.T) {
 		OutputPath string
 
 		// package
-		userPath     string
-		passwordPath string
+		realmPath string
 	}
 	tests := []struct {
 		name          string
@@ -52,33 +50,23 @@ func Test_migrate(t *testing.T) {
 		{
 			name: "user file error",
 			args: args{
-				userPath: "foo",
-			},
-			wantErr: true,
-		},
-		{
-			name: "password file error",
-			args: args{
-				userPath:     userFile,
-				passwordPath: "foo",
+				realmPath: "foo",
 			},
 			wantErr: true,
 		},
 		{
 			name: "write error",
 			args: args{
-				OutputPath:   "/foo/bar/xxx/out.json",
-				userPath:     userFile,
-				passwordPath: passwordFile,
+				OutputPath: "/foo/bar/xxx/out.json",
+				realmPath:  realmFile,
 			},
 			wantErr: true,
 		},
 		{
 			name: "success",
 			args: args{
-				OutputPath:   filepath.Join(outDir, "importData.json"),
-				userPath:     userFile,
-				passwordPath: passwordFile,
+				OutputPath: filepath.Join(outDir, "importData.json"),
+				realmPath:  realmFile,
 			},
 			referenceFile: referenceFile,
 		},
@@ -88,10 +76,8 @@ func Test_migrate(t *testing.T) {
 			migration.OutputPath = tt.args.OutputPath
 			migration.OrganizationID = "123"
 			migration.Timeout = 30 * time.Minute
-			verifiedEmails = true
 			migration.MultiLine = true
-			userPath = tt.args.userPath
-			passwordPath = tt.args.passwordPath
+			realmPath = tt.args.realmPath
 
 			t.Cleanup(func() {
 				err := os.RemoveAll(tt.args.OutputPath)

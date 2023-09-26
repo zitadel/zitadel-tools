@@ -19,9 +19,23 @@ var (
 	OutputPath     string
 	OrganizationID string
 	Timeout        time.Duration
-	VerifiedEmails bool
 	MultiLine      bool
 )
+
+func ReadJSONFile[T any](name string) (out T, err error) {
+	file, err := os.Open(name)
+	if err != nil {
+		return out, fmt.Errorf("json file: %w", err)
+	}
+	defer file.Close()
+
+	decoder := json.NewDecoder(file)
+	err = decoder.Decode(&out)
+	if err != nil {
+		return out, fmt.Errorf("json file: %w", err)
+	}
+	return out, nil
+}
 
 func ReadJSONLinesFile[T any](name string) (out []T, err error) {
 	file, err := os.Open(name)

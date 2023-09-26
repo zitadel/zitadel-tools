@@ -21,7 +21,6 @@ func init() {
 
 	Cmd.PersistentFlags().StringVar(&migration.OutputPath, "output", "./importBody.json", "path where the generated json will be saved")
 	Cmd.PersistentFlags().DurationVar(&migration.Timeout, "timeout", 30*time.Minute, "maximum duration to be used for the import")
-	Cmd.PersistentFlags().BoolVar(&migration.VerifiedEmails, "email-verified", true, "specify if imported emails are automatically verified")
 	Cmd.PersistentFlags().BoolVar(&migration.MultiLine, "multiline", false, "print the JSON output in multiple lines")
 
 	Cmd.AddCommand(auth0.Cmd)
