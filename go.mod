@@ -6,7 +6,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.18.0
 	github.com/spf13/cobra v1.7.0
 	github.com/zitadel/oidc v1.13.4
-	github.com/zitadel/zitadel-go/v2 v2.0.20
+	github.com/zitadel/zitadel-go/v2 v2.0.21
 	google.golang.org/protobuf v1.31.0
 )
 
@@ -26,6 +26,6 @@ require (
 	google.golang.org/genproto v0.0.0-20230803162519-f966b187b2e5 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20230822172742-b8732ec3820d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230822172742-b8732ec3820d // indirect
-	google.golang.org/grpc v1.58.0 // indirect
+	google.golang.org/grpc v1.58.1 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 )
