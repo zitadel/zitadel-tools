@@ -1,0 +1,44 @@
+{
+  "dataOrgs":  {
+    "orgs":  [
+      {
+        "orgId":  "123",
+        "humanUsers":  [
+          {
+            "user":  {
+              "userName":  "test2@example.com",
+              "profile":  {
+                "firstName":  "Test Example2",
+                "lastName":  "Test Example2"
+              },
+              "email":  {
+                "email":  "test2@example.com",
+                "isEmailVerified":  true
+              },
+              "hashedPassword":  {
+                "value":  "$2b$10$Z6hUTEEeoJXN5/AmSm/4.eZ75RYgFVriQM9LPhNEC7kbAbS/VAaJ2"
+              }
+            }
+          },
+          {
+            "user":  {
+              "userName":  "test@example.com",
+              "profile":  {
+                "firstName":  "Test User",
+                "lastName":  "Test User"
+              },
+              "email":  {
+                "email":  "test@example.com",
+                "isEmailVerified":  true
+              },
+              "hashedPassword":  {
+                "value":  "$2b$10$CSZ2JarG4XYbGa.JkfpqnO2wrlbfp5eb5LScHSGo9XGeZ.a.Ic54S"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "timeout":  "30m0s"
+}
