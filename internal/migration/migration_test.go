@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -156,6 +157,54 @@ func TestReadJSONLinesFile(t *testing.T) {
 			assert.Equal(t, tt.want, got)
 		})
 	}
+}
+
+func TestCreateV1Migration(t *testing.T) {
+	users := []User{{
+		UserId:        "user1",
+		UserName:      "foobar",
+		FirstName:     "foo",
+		LastName:      "bar",
+		Email:         "foo@bar.com",
+		EmailVerified: true,
+		PasswordHash:  "xxx",
+	}}
+	OrganizationID = "123"
+	Timeout = time.Minute
+
+	want := &admin.ImportDataRequest{
+		Timeout: "1m0s",
+		Data: &admin.ImportDataRequest_DataOrgs{
+			DataOrgs: &admin.ImportDataOrg{
+				Orgs: []*admin.DataOrg{
+					{
+						OrgId: "123",
+						HumanUsers: []*v1.DataHumanUser{
+							{
+								UserId: "user1",
+								User: &management.ImportHumanUserRequest{
+									UserName: "foobar",
+									Profile: &management.ImportHumanUserRequest_Profile{
+										FirstName: "foo",
+										LastName:  "bar",
+									},
+									Email: &management.ImportHumanUserRequest_Email{
+										Email:           "foo@bar.com",
+										IsEmailVerified: true,
+									},
+									HashedPassword: &management.ImportHumanUserRequest_HashedPassword{
+										Value: "xxx",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	got := CreateV1Migration(users)
+	assert.Equal(t, want, got)
 }
 
 func TestWriteProtoToFile(t *testing.T) {

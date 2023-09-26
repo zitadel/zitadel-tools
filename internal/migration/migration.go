@@ -60,7 +60,6 @@ func ReadJSONLinesFile[T any](name string) (out []T, err error) {
 type User struct {
 	UserId        string // ignored in V1
 	UserName      string
-	DisplayName   string
 	FirstName     string
 	LastName      string
 	Email         string
@@ -94,8 +93,9 @@ func createHumanUsers(users []User) []*v1.DataHumanUser {
 	result := make([]*v1.DataHumanUser, len(users))
 	for i, u := range users {
 		result[i] = &v1.DataHumanUser{
+			UserId: u.UserId,
 			User: &management.ImportHumanUserRequest{
-				UserName: u.Email,
+				UserName: u.UserName,
 				Profile: &management.ImportHumanUserRequest_Profile{
 					FirstName: u.FirstName,
 					LastName:  u.LastName,
