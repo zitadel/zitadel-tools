@@ -51,6 +51,13 @@ The tool prints the URL- and Base64 encoded result to standard output
 zitadel-tools basicauth --id $CLIENT_ID --secret $CLIENT_SECRET
 ```
 
-## Migrate data (e.g. Auth0) to ZITADEL import
+## Migrate data to ZITADEL import
 
-Please check the description in the [migration section](./cmd/migration/auth0).
+Zitadel-tools can be used to transform exported data from other providers
+to the import schema of Zitadel. We currently support [Auth0](cmd/migration/auth0/readme.md) and [Keycloak](cmd/migration/keycloak/readme.md).
+
+To print available sub-commands and flags:
+
+```zsh
+zitadel-tools migrate --help
+```

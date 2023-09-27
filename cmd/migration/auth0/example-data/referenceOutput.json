@@ -5,6 +5,7 @@
         "orgId":  "123",
         "humanUsers":  [
           {
+            "userId":  "auth0|6437e9c2b7add15a89b4915b",
             "user":  {
               "userName":  "test2@example.com",
               "profile":  {
@@ -21,6 +22,7 @@
             }
           },
           {
+            "userId":  "auth0|6437fa205c7266dc77f88a6c",
             "user":  {
               "userName":  "test@example.com",
               "profile":  {

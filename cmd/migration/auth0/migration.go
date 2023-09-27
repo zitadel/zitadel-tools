@@ -68,7 +68,7 @@ func createHumanUsers(users []user, passwords []password) []migration.User {
 	result := make([]migration.User, len(users))
 	for i, u := range users {
 		result[i] = migration.User{
-			// UserId:        u.UserId,
+			UserId:        u.UserId,
 			UserName:      u.Email,
 			FirstName:     u.Name,
 			LastName:      u.Name,
