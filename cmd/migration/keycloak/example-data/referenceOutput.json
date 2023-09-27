@@ -1,0 +1,29 @@
+{
+  "dataOrgs": {
+    "orgs": [
+      {
+        "orgId": "123",
+        "humanUsers": [
+          {
+            "userId": "826731b2-bf17-4bd9-b45c-6a26c76ddaae",
+            "user": {
+              "userName": "test-user",
+              "profile": {
+                "firstName": "John",
+                "lastName": "Doe"
+              },
+              "email": {
+                "email": "test-user@mail.com",
+                "isEmailVerified": true
+              },
+              "hashedPassword": {
+                "value": "$pbkdf2-sha256$27500$RaXjs4RiUKgJGkX6kp277w==$ng6oDRung/pBLayd5ro7IU3mL/p86pg3WvQNQc+N1Eg="
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "timeout": "30m0s"
+}
