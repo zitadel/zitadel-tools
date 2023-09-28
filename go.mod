@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/spf13/cobra v1.7.0
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.4
 	github.com/zitadel/oidc v1.13.4
 	github.com/zitadel/passwap v0.4.0
 	github.com/zitadel/zitadel-go/v2 v2.0.21
