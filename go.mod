@@ -3,7 +3,7 @@ module github.com/zitadel/zitadel-tools
 go 1.20
 
 require (
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.8.4
 	github.com/zitadel/oidc v1.13.5
 	github.com/zitadel/passwap v0.4.0
