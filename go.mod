@@ -7,7 +7,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/zitadel/oidc v1.13.5
 	github.com/zitadel/passwap v0.4.0
-	github.com/zitadel/zitadel-go/v2 v2.1.2
+	github.com/zitadel/zitadel-go/v2 v2.1.3
 	google.golang.org/protobuf v1.31.0
 )
 
