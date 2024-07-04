@@ -8,7 +8,7 @@ require (
 	github.com/zitadel/oidc v1.13.5
 	github.com/zitadel/passwap v0.6.0
 	github.com/zitadel/zitadel-go/v2 v2.2.4
-	google.golang.org/protobuf v1.34.1
+	google.golang.org/protobuf v1.34.2
 )
 
 require (
