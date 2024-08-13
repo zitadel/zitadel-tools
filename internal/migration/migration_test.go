@@ -9,9 +9,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/admin"
-	"github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/management"
-	v1 "github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/v1"
+	"github.com/zitadel/zitadel-go/v3/pkg/client/zitadel/admin"
+	"github.com/zitadel/zitadel-go/v3/pkg/client/zitadel/management"
+	v1 "github.com/zitadel/zitadel-go/v3/pkg/client/zitadel/v1"
 )
 
 var outDir string

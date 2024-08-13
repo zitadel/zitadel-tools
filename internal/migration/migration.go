@@ -9,9 +9,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/admin"
-	"github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/management"
-	v1 "github.com/zitadel/zitadel-go/v2/pkg/client/zitadel/v1"
+	"github.com/zitadel/zitadel-go/v3/pkg/client/zitadel/admin"
+	"github.com/zitadel/zitadel-go/v3/pkg/client/zitadel/management"
+	v1 "github.com/zitadel/zitadel-go/v3/pkg/client/zitadel/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
