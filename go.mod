@@ -9,7 +9,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	github.com/zitadel/oidc/v3 v3.26.0
 	github.com/zitadel/passwap v0.6.0
-	github.com/zitadel/zitadel-go/v2 v2.2.6
+	github.com/zitadel/zitadel-go/v2 v2.2.8
 	google.golang.org/protobuf v1.34.2
 )
 
