@@ -47,6 +47,6 @@ jobs:
         if: steps.semantic.outputs.new_release_published == 'true' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
         with:
           version: latest
-          args: release --rm-dist
+          args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
