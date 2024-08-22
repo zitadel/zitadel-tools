@@ -7,7 +7,7 @@ toolchain go1.22.4
 require (
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
-	github.com/zitadel/oidc/v3 v3.27.0
+	github.com/zitadel/oidc/v3 v3.28.1
 	github.com/zitadel/passwap v0.6.0
 	github.com/zitadel/zitadel-go/v3 v3.0.1
 	google.golang.org/protobuf v1.34.2
