@@ -63,8 +63,8 @@ github.com/zitadel/passwap v0.6.0 h1:m9F3epFC0VkBXu25rihSLGyHvWiNlCzU5kk8RoI+SXQ
 github.com/zitadel/passwap v0.6.0/go.mod h1:kqAiJ4I4eZvm3Y6oAk6hlEqlZZOkjMHraGXF90GG7LI=
 github.com/zitadel/schema v1.3.0 h1:kQ9W9tvIwZICCKWcMvCEweXET1OcOyGEuFbHs4o5kg0=
 github.com/zitadel/schema v1.3.0/go.mod h1:NptN6mkBDFvERUCvZHlvWmmME+gmZ44xzwRXwhzsbtc=
-github.com/zitadel/zitadel-go/v3 v3.0.1 h1:AFre9AsrwpMAVnVtU6f5eTy5Aypno2fsLzCXrN8DOos=
-github.com/zitadel/zitadel-go/v3 v3.0.1/go.mod h1:b+3HqRocliOjfpWgjOukYiS1pXpzOgWdacq1mRfpqCs=
+github.com/zitadel/zitadel-go/v3 v3.0.2 h1:PzT00G9gbe0K4Q2b2Jxf1QZwKQ8DB6YEnlL2/sk6+B4=
+github.com/zitadel/zitadel-go/v3 v3.0.2/go.mod h1:b+3HqRocliOjfpWgjOukYiS1pXpzOgWdacq1mRfpqCs=
 go.opentelemetry.io/otel v1.28.0 h1:/SqNcYk+idO0CxKEUOtKQClMK/MimZihKYMruSMViUo=
 go.opentelemetry.io/otel v1.28.0/go.mod h1:q68ijF8Fc8CnMHKyzqL6akLO46ePnjkgfIMIjUIX9z4=
 go.opentelemetry.io/otel/metric v1.28.0 h1:f0HGvSl1KRAU1DLgLGFjrwVyismPlnuU6JD6bOeuA5Q=
