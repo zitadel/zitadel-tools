@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/zitadel/zitadel-tools/cmd/basicauth"
+	"github.com/zitadel/zitadel-tools/cmd/data"
 	"github.com/zitadel/zitadel-tools/cmd/jwt"
 	"github.com/zitadel/zitadel-tools/cmd/migration"
 )
@@ -33,4 +34,5 @@ func init() {
 	rootCmd.AddCommand(jwt.Cmd)
 	rootCmd.AddCommand(basicauth.Cmd)
 	rootCmd.AddCommand(migration.Cmd)
+	rootCmd.AddCommand(data.Cmd)
 }
