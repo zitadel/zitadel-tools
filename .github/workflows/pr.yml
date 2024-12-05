@@ -31,3 +31,4 @@ jobs:
         with:
           files: ./profile.cov
           name: go-codecov
+          token: ${{ secrets.CODECOV_TOKEN }}
