@@ -27,7 +27,8 @@ jobs:
           go mod download
           go test -race -v -coverprofile=profile.cov ./...
       - name: Publish go coverage
-        uses: codecov/codecov-action@v4.5.0
+        uses: codecov/codecov-action@v5.0.7
         with:
-          file: ./profile.cov
+          files: ./profile.cov
           name: go-codecov
+          token: ${{ secrets.CODECOV_TOKEN }}
