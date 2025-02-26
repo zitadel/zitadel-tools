@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
-	github.com/zitadel/oidc/v3 v3.34.2
+	github.com/zitadel/oidc/v3 v3.35.0
 	github.com/zitadel/passwap v0.6.1
 	github.com/zitadel/zitadel-go/v3 v3.4.2
 	google.golang.org/protobuf v1.36.5
