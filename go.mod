@@ -1,6 +1,6 @@
 module github.com/zitadel/zitadel-tools
 
-go 1.22
+go 1.23.7
 
 require (
 	github.com/spf13/cobra v1.9.1
