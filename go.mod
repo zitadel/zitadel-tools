@@ -2,11 +2,13 @@ module github.com/zitadel/zitadel-tools
 
 go 1.23.7
 
+toolchain go1.24.1
+
 require (
 	github.com/spf13/cobra v1.9.1
 	github.com/stretchr/testify v1.10.0
 	github.com/zitadel/oidc/v3 v3.37.0
-	github.com/zitadel/passwap v0.7.0
+	github.com/zitadel/passwap v0.8.0
 	github.com/zitadel/zitadel-go/v3 v3.5.0
 	google.golang.org/protobuf v1.36.6
 )
