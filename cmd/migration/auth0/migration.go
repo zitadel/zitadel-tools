@@ -81,14 +81,31 @@ func createHumanUsers(users []user, passwords []password) []migration.User {
 			userName = u.Email
 		}
 		
-		// Use given_name and family_name if available, otherwise fall back to name
+		// Ensure firstName and lastName are always populated (required by ZITADEL)
 		firstName := u.GivenName
 		lastName := u.FamilyName
-		if firstName == "" && u.Name != "" {
-			firstName = u.Name
+		
+		// If given_name or family_name are missing, use fallbacks
+		if firstName == "" {
+			if u.Name != "" {
+				firstName = u.Name
+			} else {
+				// Ultimate fallback: derive from email or username
+				firstName = userName
+			}
 		}
-		if lastName == "" && u.Name != "" {
-			lastName = u.Name
+		if lastName == "" {
+			if u.Name != "" {
+				lastName = u.Name
+			} else {
+				// Ultimate fallback: derive from email or username
+				lastName = userName
+			}
+		}
+		
+		// Ensure lastName is never empty (ZITADEL requirement)
+		if lastName == "" {
+			lastName = firstName // Use firstName as fallback
 		}
 		
 		result[i] = migration.User{

@@ -1,2 +1,5 @@
-{"user_id":"auth0|6437e9c2b7add15a89b4915b","email":"test2@example.com","name":"Test Example2"}
-{"user_id":"auth0|6437fa205c7266dc77f88a6c","email":"test@example.com","name":"Test User"}
+{"user_id": "auth0|60425dc43519d90068f82973", "email": "john@example.com", "username": "johndoe", "given_name": "John", "family_name": "Doe", "nickname": "johnny", "name": "John Doe", "locale": "en-US", "phone_number": "+1234567890", "phone_verified": true, "email_verified": true}
+{"user_id": "auth0|60425da93519d90068f82966", "email": "jane@example.com", "name": "Jane Smith", "locale": "fr-FR", "email_verified": false}
+{"user_id": "auth0|60425da93519d90068f82967", "email": "minimal@example.com"}
+{"user_id": "auth0|60425da93519d90068f82968", "email": "bob@example.com", "username": "bobsmith", "given_name": "Bob", "family_name": "Smith", "phone_number": "+9876543210", "phone_verified": false, "email_verified": true}
+{"user_id": "auth0|60425da93519d90068f82969", "email": "onlyname@example.com", "name": "Full Name Only", "email_verified": true}

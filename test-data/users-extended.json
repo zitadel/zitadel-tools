@@ -1,4 +1,0 @@
-{"user_id": "user1", "email": "john@example.com", "username": "johndoe", "given_name": "John", "family_name": "Doe", "nickname": "johnny", "name": "John Doe", "locale": "en-US", "phone_number": "+1234567890", "phone_verified": true, "email_verified": true}
-{"user_id": "user2", "email": "jane@example.com", "name": "Jane Smith", "locale": "fr-FR", "email_verified": false}
-{"user_id": "user3", "email": "minimal@example.com"}
-{"user_id": "user4", "email": "bob@example.com", "username": "bobsmith", "given_name": "Bob", "family_name": "Smith", "phone_number": "+9876543210", "phone_verified": false, "email_verified": true}

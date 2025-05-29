@@ -306,6 +306,45 @@ func TestCreateV1Migration(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "user with firstName/lastName derived from email (minimal case)",
+			users: []User{{
+				UserId:        "user4",
+				UserName:      "minimal@example.com",
+				FirstName:     "minimal@example.com", // Should be set by Auth0 migration layer
+				LastName:      "minimal@example.com", // Should be set by Auth0 migration layer
+				Email:         "minimal@example.com",
+				EmailVerified: true,
+			}},
+			want: &admin.ImportDataRequest{
+				Timeout: "1m0s",
+				Data: &admin.ImportDataRequest_DataOrgs{
+					DataOrgs: &admin.ImportDataOrg{
+						Orgs: []*admin.DataOrg{
+							{
+								OrgId: "123",
+								HumanUsers: []*v1.DataHumanUser{
+									{
+										UserId: "user4",
+										User: &management.ImportHumanUserRequest{
+											UserName: "minimal@example.com",
+											Profile: &management.ImportHumanUserRequest_Profile{
+												FirstName: "minimal@example.com",
+												LastName:  "minimal@example.com",
+											},
+											Email: &management.ImportHumanUserRequest_Email{
+												Email:           "minimal@example.com",
+												IsEmailVerified: true,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	OrganizationID = "123"
