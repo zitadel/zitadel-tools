@@ -10,7 +10,8 @@
               "userName":  "test2@example.com",
               "profile":  {
                 "firstName":  "Test Example2",
-                "lastName":  "Test Example2"
+                "lastName":  "Test Example2",
+                "displayName":  "Test Example2"
               },
               "email":  {
                 "email":  "test2@example.com",
@@ -27,7 +28,8 @@
               "userName":  "test@example.com",
               "profile":  {
                 "firstName":  "Test User",
-                "lastName":  "Test User"
+                "lastName":  "Test User",
+                "displayName":  "Test User"
               },
               "email":  {
                 "email":  "test@example.com",

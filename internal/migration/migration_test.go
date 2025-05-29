@@ -160,40 +160,144 @@ func TestReadJSONLinesFile(t *testing.T) {
 }
 
 func TestCreateV1Migration(t *testing.T) {
-	users := []User{{
-		UserId:        "user1",
-		UserName:      "foobar",
-		FirstName:     "foo",
-		LastName:      "bar",
-		Email:         "foo@bar.com",
-		EmailVerified: true,
-		PasswordHash:  "xxx",
-	}}
-	OrganizationID = "123"
-	Timeout = time.Minute
-
-	want := &admin.ImportDataRequest{
-		Timeout: "1m0s",
-		Data: &admin.ImportDataRequest_DataOrgs{
-			DataOrgs: &admin.ImportDataOrg{
-				Orgs: []*admin.DataOrg{
-					{
-						OrgId: "123",
-						HumanUsers: []*v1.DataHumanUser{
+	tests := []struct {
+		name  string
+		users []User
+		want  *admin.ImportDataRequest
+	}{
+		{
+			name: "basic user with minimal fields",
+			users: []User{{
+				UserId:        "user1",
+				UserName:      "foobar",
+				FirstName:     "foo",
+				LastName:      "bar",
+				Email:         "foo@bar.com",
+				EmailVerified: true,
+				PasswordHash:  "xxx",
+			}},
+			want: &admin.ImportDataRequest{
+				Timeout: "1m0s",
+				Data: &admin.ImportDataRequest_DataOrgs{
+					DataOrgs: &admin.ImportDataOrg{
+						Orgs: []*admin.DataOrg{
 							{
-								UserId: "user1",
-								User: &management.ImportHumanUserRequest{
-									UserName: "foobar",
-									Profile: &management.ImportHumanUserRequest_Profile{
-										FirstName: "foo",
-										LastName:  "bar",
+								OrgId: "123",
+								HumanUsers: []*v1.DataHumanUser{
+									{
+										UserId: "user1",
+										User: &management.ImportHumanUserRequest{
+											UserName: "foobar",
+											Profile: &management.ImportHumanUserRequest_Profile{
+												FirstName: "foo",
+												LastName:  "bar",
+											},
+											Email: &management.ImportHumanUserRequest_Email{
+												Email:           "foo@bar.com",
+												IsEmailVerified: true,
+											},
+											HashedPassword: &management.ImportHumanUserRequest_HashedPassword{
+												Value: "xxx",
+											},
+										},
 									},
-									Email: &management.ImportHumanUserRequest_Email{
-										Email:           "foo@bar.com",
-										IsEmailVerified: true,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "user with all optional Auth0 fields",
+			users: []User{{
+				UserId:        "user2",
+				UserName:      "johndoe",
+				FirstName:     "John",
+				LastName:      "Doe",
+				Email:         "john@example.com",
+				EmailVerified: true,
+				PasswordHash:  "hashedpass",
+				Nickname:      "johnny",
+				Name:          "John Doe",
+				Locale:        "en-US",
+				PhoneNumber:   "+1234567890",
+				PhoneVerified: true,
+			}},
+			want: &admin.ImportDataRequest{
+				Timeout: "1m0s",
+				Data: &admin.ImportDataRequest_DataOrgs{
+					DataOrgs: &admin.ImportDataOrg{
+						Orgs: []*admin.DataOrg{
+							{
+								OrgId: "123",
+								HumanUsers: []*v1.DataHumanUser{
+									{
+										UserId: "user2",
+										User: &management.ImportHumanUserRequest{
+											UserName: "johndoe",
+											Profile: &management.ImportHumanUserRequest_Profile{
+												FirstName:         "John",
+												LastName:          "Doe",
+												NickName:          "johnny",
+												DisplayName:       "John Doe",
+												PreferredLanguage: "en-US",
+											},
+											Email: &management.ImportHumanUserRequest_Email{
+												Email:           "john@example.com",
+												IsEmailVerified: true,
+											},
+											Phone: &management.ImportHumanUserRequest_Phone{
+												Phone:           "+1234567890",
+												IsPhoneVerified: true,
+											},
+											HashedPassword: &management.ImportHumanUserRequest_HashedPassword{
+												Value: "hashedpass",
+											},
+										},
 									},
-									HashedPassword: &management.ImportHumanUserRequest_HashedPassword{
-										Value: "xxx",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "user with partial optional fields",
+			users: []User{{
+				UserId:        "user3",
+				UserName:      "jane",
+				Email:         "jane@example.com",
+				EmailVerified: false,
+				Nickname:      "janie",
+				PhoneNumber:   "+9876543210",
+				PhoneVerified: false,
+			}},
+			want: &admin.ImportDataRequest{
+				Timeout: "1m0s",
+				Data: &admin.ImportDataRequest_DataOrgs{
+					DataOrgs: &admin.ImportDataOrg{
+						Orgs: []*admin.DataOrg{
+							{
+								OrgId: "123",
+								HumanUsers: []*v1.DataHumanUser{
+									{
+										UserId: "user3",
+										User: &management.ImportHumanUserRequest{
+											UserName: "jane",
+											Profile: &management.ImportHumanUserRequest_Profile{
+												NickName: "janie",
+											},
+											Email: &management.ImportHumanUserRequest_Email{
+												Email:           "jane@example.com",
+												IsEmailVerified: false,
+											},
+											Phone: &management.ImportHumanUserRequest_Phone{
+												Phone:           "+9876543210",
+												IsPhoneVerified: false,
+											},
+										},
 									},
 								},
 							},
@@ -203,8 +307,16 @@ func TestCreateV1Migration(t *testing.T) {
 			},
 		},
 	}
-	got := CreateV1Migration(users)
-	assert.Equal(t, want, got)
+
+	OrganizationID = "123"
+	Timeout = time.Minute
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := CreateV1Migration(tt.users)
+			assert.Equal(t, tt.want, got)
+		})
+	}
 }
 
 func TestWriteProtoToFile(t *testing.T) {
