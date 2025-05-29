@@ -115,7 +115,7 @@ func createHumanUsers(users []User) []*v1.DataHumanUser {
 				},
 			},
 		}
-		
+
 		// Add phone if present
 		if u.PhoneNumber != "" {
 			result[i].User.Phone = &management.ImportHumanUserRequest_Phone{
@@ -123,7 +123,7 @@ func createHumanUsers(users []User) []*v1.DataHumanUser {
 				IsPhoneVerified: u.PhoneVerified,
 			}
 		}
-		
+
 		if u.PasswordHash != "" {
 			result[i].User.HashedPassword = &management.ImportHumanUserRequest_HashedPassword{
 				Value: u.PasswordHash,

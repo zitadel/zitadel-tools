@@ -3,6 +3,7 @@ package auth0
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/zitadel/zitadel-tools/internal/migration"
@@ -80,11 +81,11 @@ func createHumanUsers(users []user, passwords []password) []migration.User {
 		if userName == "" {
 			userName = u.Email
 		}
-		
+
 		// Ensure firstName and lastName are always populated (required by ZITADEL)
 		firstName := u.GivenName
 		lastName := u.FamilyName
-		
+
 		// If given_name or family_name are missing, use fallbacks
 		if firstName == "" {
 			if u.Name != "" {
@@ -102,12 +103,12 @@ func createHumanUsers(users []user, passwords []password) []migration.User {
 				lastName = userName
 			}
 		}
-		
+
 		// Ensure lastName is never empty (ZITADEL requirement)
 		if lastName == "" {
 			lastName = firstName // Use firstName as fallback
 		}
-		
+
 		result[i] = migration.User{
 			UserId:        u.UserId,
 			UserName:      userName,
@@ -118,7 +119,7 @@ func createHumanUsers(users []user, passwords []password) []migration.User {
 			PasswordHash:  getPassword(u.Email, passwords),
 			Nickname:      u.Nickname,
 			Name:          u.Name,
-			Locale:        u.Locale,
+			Locale:        mapAuth0LocaleToZitadelLanguage(u.Locale),
 			PhoneNumber:   u.PhoneNumber,
 			PhoneVerified: u.PhoneVerified,
 		}
@@ -133,5 +134,48 @@ func getPassword(userEmail string, passwords []password) string {
 			return p.PasswordHash
 		}
 	}
+	return ""
+}
+
+// mapAuth0LocaleToZitadelLanguage maps Auth0 locale codes to ZITADEL supported language codes
+// Auth0 can use both simple formats ("es", "en") and full locale formats ("en-US", "es-AR", "es-419", "es-MX", "fr-FR", "de-DE", etc.)
+// ZITADEL supports simple language codes: "de", "en", "es", "fr", "it", "ja", "pl", "pt", "ru", "zh"
+func mapAuth0LocaleToZitadelLanguage(auth0Locale string) string {
+	if auth0Locale == "" {
+		return ""
+	}
+
+	// Convert to lowercase for consistent matching
+	locale := strings.ToLower(auth0Locale)
+
+	// Extract the language part (before the hyphen for full locales, or the whole string for simple ones)
+	// Examples: "en-US" -> "en", "es-AR" -> "es", "es" -> "es", "fr" -> "fr"
+	parts := strings.Split(locale, "-")
+	if len(parts) == 0 {
+		return ""
+	}
+
+	language := parts[0]
+
+	// Map to ZITADEL supported languages
+	// Based on ZITADEL documentation: https://zitadel.com/docs/guides/manage/customize/texts#internationalization--i18n
+	supportedLanguages := map[string]string{
+		"de": "de", // German
+		"en": "en", // English
+		"es": "es", // Spanish
+		"fr": "fr", // French
+		"it": "it", // Italian
+		"ja": "ja", // Japanese
+		"pl": "pl", // Polish
+		"pt": "pt", // Portuguese
+		"ru": "ru", // Russian
+		"zh": "zh", // Chinese
+	}
+
+	if zitadelLang, exists := supportedLanguages[language]; exists {
+		return zitadelLang
+	}
+
+	// If not supported, return empty string (ignore it)
 	return ""
 }
