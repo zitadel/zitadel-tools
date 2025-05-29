@@ -21,9 +21,10 @@ You can specify additional parameters:
  - output path (--output; default is ./importBody.json)
  - timeout for the import data request (--timeout; default is 30m)
  - pretty print the output JSON (--multiline)
+ - email verified (--email-verified) When the `--email-verified` flag is set, all user emails are considered verified. With this flag unset, all users need to verify their email. 
 
 ```bash
-zitadel-tools migrate auth0 --org=<organisation id> --users=./users.json --passwords=./passwords.json --output=./importBody.json --timeout=1h --multiline
+zitadel-tools migrate auth0 --org=<organisation id> --users=./users.json --passwords=./passwords.json --output=./importBody.json --timeout=1h --multiline --email-verified
 ```
 
 You will now get a new file importBody.json
@@ -36,14 +37,44 @@ https://zitadel.com/docs/guides/migrate/sources/auth0
 
 Data is currently transformed as such:
 
-<!-- TODO: https://github.com/zitadel/zitadel-tools/issues/99 -->
+### User Fields Mapping
 
+| Source (Auth0)              | Destination (ZITADEL)     | Notes |
+| --------------------------- | ------------------------- | ----- |
+| `user_id`                   | `userId`                  | Unique identifier |
+| `email`                     | `email`                   | Primary email address |
+| `email`                     | `userName`                | Used as fallback if `username` is empty |
+| `username`                  | `userName`                | Preferred if available |
+| `given_name`                | `firstName`               | Falls back to `name` or `userName` if empty |
+| `family_name`               | `lastName`                | Falls back to `name` or `userName` if empty |
+| `name`                      | `displayName`             | Full display name |
+| `nickname`                  | `nickName`                | User's nickname |
+| `locale`                    | `preferredLanguage`       | Mapped from Auth0 locale to ZITADEL language codes¹ |
+| `phone_number`              | `phone`                   | User's phone number |
+| `phone_verified`            | `isPhoneVerified`         | Phone verification status |
+| `--email-verified` flag     | `isEmailVerified`         | Email verification (CLI flag only, default: false) |
+| Password hash (from passwords.json) | `hashedPassword` | Bcrypt password hash |
 
-| Source (Auth0)              | Destination (ZITADEL) |
+### Locale Mapping
+
+¹ Auth0 locales are mapped to ZITADEL's supported language codes:
+
+| Auth0 Locale Examples       | ZITADEL Language Code |
 | --------------------------- | --------------------- |
-| `email`                     | `userName`            |
-| `name`                      | `firstName`           |
-| `name`                      | `lastName`            |
-| `--email-verified` flag[^1] | `isEmailVerified`     |
+| `en`, `en-US`, `en-GB`      | `en`                  |
+| `es`, `es-AR`, `es-MX`      | `es`                  |
+| `fr`, `fr-FR`, `fr-CA`      | `fr`                  |
+| `de`, `de-DE`, `de-AT`      | `de`                  |
+| `pt`, `pt-BR`, `pt-PT`      | `pt`                  |
+| `it`, `it-IT`              | `it`                  |
+| `ja`, `ja-JP`              | `ja`                  |
+| `pl`, `pl-PL`              | `pl`                  |
+| `ru`, `ru-RU`              | `ru`                  |
+| `zh`, `zh-CN`, `zh-TW`      | `zh`                  |
+| Unsupported locales         | *(ignored)*           |
 
-[^1]: When the `--email-verified` flag is set, all user emails are considered verified. With this flag unset, all users need to verify their email.
+### Fallback Logic
+
+- **firstName**: `given_name` → `name` → `userName` (email or username)
+- **lastName**: `family_name` → `name` → `userName` (email or username) → `firstName`
+- **userName**: `username` → `email`

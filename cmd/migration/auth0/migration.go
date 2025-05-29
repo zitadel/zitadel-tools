@@ -27,7 +27,7 @@ var (
 func init() {
 	Cmd.Flags().StringVar(&userPath, "users", "./users.json", "path to the users.json")
 	Cmd.Flags().StringVar(&passwordPath, "passwords", "./passwords.json", "path to the passwords.json")
-	Cmd.Flags().BoolVar(&verifiedEmails, "email-verified", true, "specify if imported emails are automatically verified")
+	Cmd.Flags().BoolVar(&verifiedEmails, "email-verified", false, "specify if imported emails are automatically verified")
 }
 
 type user struct {
@@ -115,7 +115,7 @@ func createHumanUsers(users []user, passwords []password) []migration.User {
 			FirstName:     firstName,
 			LastName:      lastName,
 			Email:         u.Email,
-			EmailVerified: u.EmailVerified || verifiedEmails, // Use field value or CLI flag
+			EmailVerified: verifiedEmails, // Use CLI flag only
 			PasswordHash:  getPassword(u.Email, passwords),
 			Nickname:      u.Nickname,
 			Name:          u.Name,
