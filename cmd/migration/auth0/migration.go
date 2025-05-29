@@ -30,9 +30,17 @@ func init() {
 }
 
 type user struct {
-	UserId string `json:"user_id"`
-	Email  string `json:"email"`
-	Name   string `json:"name"`
+	UserId        string `json:"user_id"`        // mandatory
+	Email         string `json:"email"`          // mandatory
+	Name          string `json:"name"`           // optional, maps to displayName
+	Username      string `json:"username"`       // optional
+	GivenName     string `json:"given_name"`     // optional
+	FamilyName    string `json:"family_name"`    // optional
+	Nickname      string `json:"nickname"`       // optional
+	Locale        string `json:"locale"`         // optional
+	PhoneNumber   string `json:"phone_number"`   // optional
+	PhoneVerified bool   `json:"phone_verified"` // optional
+	EmailVerified bool   `json:"email_verified"` // optional
 }
 
 type password struct {
@@ -67,14 +75,35 @@ func migrate() error {
 func createHumanUsers(users []user, passwords []password) []migration.User {
 	result := make([]migration.User, len(users))
 	for i, u := range users {
+		// Use username if available, otherwise fall back to email
+		userName := u.Username
+		if userName == "" {
+			userName = u.Email
+		}
+		
+		// Use given_name and family_name if available, otherwise fall back to name
+		firstName := u.GivenName
+		lastName := u.FamilyName
+		if firstName == "" && u.Name != "" {
+			firstName = u.Name
+		}
+		if lastName == "" && u.Name != "" {
+			lastName = u.Name
+		}
+		
 		result[i] = migration.User{
 			UserId:        u.UserId,
-			UserName:      u.Email,
-			FirstName:     u.Name,
-			LastName:      u.Name,
+			UserName:      userName,
+			FirstName:     firstName,
+			LastName:      lastName,
 			Email:         u.Email,
-			EmailVerified: verifiedEmails,
+			EmailVerified: u.EmailVerified || verifiedEmails, // Use field value or CLI flag
 			PasswordHash:  getPassword(u.Email, passwords),
+			Nickname:      u.Nickname,
+			Name:          u.Name,
+			Locale:        u.Locale,
+			PhoneNumber:   u.PhoneNumber,
+			PhoneVerified: u.PhoneVerified,
 		}
 
 	}
