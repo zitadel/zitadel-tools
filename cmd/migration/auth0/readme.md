@@ -55,24 +55,6 @@ Data is currently transformed as such:
 | `--email-verified` flag     | `isEmailVerified`         | Email verification (CLI flag only, default: false) |
 | Password hash (from passwords.json) | `hashedPassword` | Bcrypt password hash |
 
-### Locale Mapping
-
-¹ Auth0 locales are mapped to ZITADEL's supported language codes:
-
-| Auth0 Locale Examples       | ZITADEL Language Code |
-| --------------------------- | --------------------- |
-| `en`, `en-US`, `en-GB`      | `en`                  |
-| `es`, `es-AR`, `es-MX`      | `es`                  |
-| `fr`, `fr-FR`, `fr-CA`      | `fr`                  |
-| `de`, `de-DE`, `de-AT`      | `de`                  |
-| `pt`, `pt-BR`, `pt-PT`      | `pt`                  |
-| `it`, `it-IT`              | `it`                  |
-| `ja`, `ja-JP`              | `ja`                  |
-| `pl`, `pl-PL`              | `pl`                  |
-| `ru`, `ru-RU`              | `ru`                  |
-| `zh`, `zh-CN`, `zh-TW`      | `zh`                  |
-| Unsupported locales         | *(ignored)*           |
-
 ### Fallback Logic
 
 - **firstName**: `given_name` → `name` → `userName` (email or username)
