@@ -65,6 +65,12 @@ type User struct {
 	Email         string
 	EmailVerified bool
 	PasswordHash  string
+	// Additional optional Auth0 fields
+	Nickname      string // maps to nickName
+	Name          string // maps to displayName
+	Locale        string // maps to preferredLanguage
+	PhoneNumber   string // maps to phone
+	PhoneVerified bool   // maps to isPhoneVerified
 }
 
 func CreateV1Migration(users []User) *admin.ImportDataRequest {
@@ -97,8 +103,11 @@ func createHumanUsers(users []User) []*v1.DataHumanUser {
 			User: &management.ImportHumanUserRequest{
 				UserName: u.UserName,
 				Profile: &management.ImportHumanUserRequest_Profile{
-					FirstName: u.FirstName,
-					LastName:  u.LastName,
+					FirstName:         u.FirstName,
+					LastName:          u.LastName,
+					NickName:          u.Nickname,
+					DisplayName:       u.Name,
+					PreferredLanguage: u.Locale,
 				},
 				Email: &management.ImportHumanUserRequest_Email{
 					Email:           u.Email,
@@ -106,6 +115,15 @@ func createHumanUsers(users []User) []*v1.DataHumanUser {
 				},
 			},
 		}
+
+		// Add phone if present
+		if u.PhoneNumber != "" {
+			result[i].User.Phone = &management.ImportHumanUserRequest_Phone{
+				Phone:           u.PhoneNumber,
+				IsPhoneVerified: u.PhoneVerified,
+			}
+		}
+
 		if u.PasswordHash != "" {
 			result[i].User.HashedPassword = &management.ImportHumanUserRequest_HashedPassword{
 				Value: u.PasswordHash,
