@@ -88,7 +88,8 @@ func Test_migrate(t *testing.T) {
 			migration.OutputPath = tt.args.OutputPath
 			migration.OrganizationID = "123"
 			migration.Timeout = 30 * time.Minute
-			verifiedEmails = true
+			emailVerifiedFlag := true
+			verifiedEmails = &emailVerifiedFlag
 			migration.MultiLine = true
 			userPath = tt.args.userPath
 			passwordPath = tt.args.passwordPath
@@ -235,6 +236,66 @@ func Test_createHumanUsers(t *testing.T) {
 			}
 		})
 	}
+}
+
+func Test_createHumanUsers_EmailVerification(t *testing.T) {
+	// Save original value and restore after tests
+	originalVerifiedEmails := verifiedEmails
+	defer func() {
+		verifiedEmails = originalVerifiedEmails
+	}()
+
+	tests := []struct {
+		name           string
+		users          []user
+		flagValue      *bool
+		wantVerified   []bool
+	}{
+		{
+			name: "use Auth0 email verification when flag not set",
+			users: []user{
+				{UserId: "user1", Email: "test1@example.com", EmailVerified: true},
+				{UserId: "user2", Email: "test2@example.com", EmailVerified: false},
+			},
+			flagValue:    nil,
+			wantVerified: []bool{true, false},
+		},
+		{
+			name: "override with flag set to true",
+			users: []user{
+				{UserId: "user1", Email: "test1@example.com", EmailVerified: false},
+				{UserId: "user2", Email: "test2@example.com", EmailVerified: false},
+			},
+			flagValue:    boolPtr(true),
+			wantVerified: []bool{true, true},
+		},
+		{
+			name: "override with flag set to false",
+			users: []user{
+				{UserId: "user1", Email: "test1@example.com", EmailVerified: true},
+				{UserId: "user2", Email: "test2@example.com", EmailVerified: true},
+			},
+			flagValue:    boolPtr(false),
+			wantVerified: []bool{false, false},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			verifiedEmails = tt.flagValue
+			got := createHumanUsers(tt.users, []password{})
+			
+			assert.Equal(t, len(tt.wantVerified), len(got))
+			for i, wantVerified := range tt.wantVerified {
+				assert.Equal(t, wantVerified, got[i].EmailVerified, "User %d email verification mismatch", i)
+			}
+		})
+	}
+}
+
+// Helper function to create bool pointer
+func boolPtr(b bool) *bool {
+	return &b
 }
 
 func Test_mapAuth0LocaleToZitadelLanguage(t *testing.T) {

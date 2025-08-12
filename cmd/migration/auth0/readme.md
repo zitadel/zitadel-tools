@@ -21,7 +21,7 @@ You can specify additional parameters:
  - output path (--output; default is ./importBody.json)
  - timeout for the import data request (--timeout; default is 30m)
  - pretty print the output JSON (--multiline)
- - email verified (--email-verified) When the `--email-verified` flag is set, all user emails are considered verified. With this flag unset, all users need to verify their email. 
+ - email verified (--email-verified) Override email verification status: `true`=all emails verified, `false`=all emails unverified, unset=use Auth0 `email_verified` field 
 
 ```bash
 zitadel-tools migrate auth0 --org=<organisation id> --users=./users.json --passwords=./passwords.json --output=./importBody.json --timeout=1h --multiline --email-verified
@@ -52,7 +52,7 @@ Data is currently transformed as such:
 | `locale`                    | `preferredLanguage`       | Mapped from Auth0 locale to ZITADEL language codes |
 | `phone_number`              | `phone`                   | User's phone number |
 | `phone_verified`            | `isPhoneVerified`         | Phone verification status |
-| `--email-verified` flag     | `isEmailVerified`         | Email verification (CLI flag only, default: false) |
+| `email_verified`            | `isEmailVerified`         | Email verification status (can be overridden by `--email-verified` flag) |
 | Password hash (from passwords.json) | `hashedPassword` | Bcrypt password hash |
 
 ### Fallback Logic

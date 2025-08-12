@@ -21,13 +21,13 @@ var Cmd = &cobra.Command{
 var (
 	userPath       string
 	passwordPath   string
-	verifiedEmails bool
+	verifiedEmails *bool
 )
 
 func init() {
 	Cmd.Flags().StringVar(&userPath, "users", "./users.json", "path to the users.json")
 	Cmd.Flags().StringVar(&passwordPath, "passwords", "./passwords.json", "path to the passwords.json")
-	Cmd.Flags().BoolVar(&verifiedEmails, "email-verified", false, "specify if imported emails are automatically verified")
+	verifiedEmails = Cmd.Flags().BoolP("email-verified", "", false, "override email verification status: true=all verified, false=all unverified, unset=use Auth0 data")
 }
 
 type user struct {
@@ -109,13 +109,19 @@ func createHumanUsers(users []user, passwords []password) []migration.User {
 			lastName = firstName // Use firstName as fallback
 		}
 
+		// Determine email verification status: use Auth0 data unless overridden by flag
+		emailVerified := u.EmailVerified // Default to Auth0 value
+		if verifiedEmails != nil {
+			emailVerified = *verifiedEmails // Override with flag value if set
+		}
+
 		result[i] = migration.User{
 			UserId:        u.UserId,
 			UserName:      userName,
 			FirstName:     firstName,
 			LastName:      lastName,
 			Email:         u.Email,
-			EmailVerified: verifiedEmails, // Use CLI flag only
+			EmailVerified: emailVerified,
 			PasswordHash:  getPassword(u.Email, passwords),
 			Nickname:      u.Nickname,
 			Name:          u.Name,
