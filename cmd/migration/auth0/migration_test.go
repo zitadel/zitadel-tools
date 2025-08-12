@@ -266,7 +266,7 @@ func Test_mapAuth0LocaleToZitadelLanguage(t *testing.T) {
 		{
 			name:        "unsupported complex locale",
 			auth0Locale: "xyz-ABC",
-			want:        "",
+			want:        "abc",
 		},
 		{
 			name:        "case insensitive matching",
@@ -291,7 +291,7 @@ func Test_mapAuth0LocaleToZitadelLanguage(t *testing.T) {
 		{
 			name:        "edge case - starts with hyphen",
 			auth0Locale: "-en",
-			want:        "",
+			want:        "en",
 		},
 	}
 

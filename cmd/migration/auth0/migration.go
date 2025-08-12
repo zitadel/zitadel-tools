@@ -3,10 +3,10 @@ package auth0
 import (
 	"fmt"
 	"log"
-	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/zitadel/zitadel-tools/internal/migration"
+	"golang.org/x/text/language"
 )
 
 // Cmd represents the auth0 migration command
@@ -138,44 +138,18 @@ func getPassword(userEmail string, passwords []password) string {
 }
 
 // mapAuth0LocaleToZitadelLanguage maps Auth0 locale codes to ZITADEL supported language codes
-// Auth0 can use both simple formats ("es", "en") and full locale formats ("en-US", "es-AR", "es-419", "es-MX", "fr-FR", "de-DE", etc.)
-// ZITADEL supports simple language codes: "de", "en", "es", "fr", "it", "ja", "pl", "pt", "ru", "zh"
+// Uses golang.org/x/text/language to parse locales and extract base language tags
 func mapAuth0LocaleToZitadelLanguage(auth0Locale string) string {
 	if auth0Locale == "" {
 		return ""
 	}
 
-	// Convert to lowercase for consistent matching
-	locale := strings.ToLower(auth0Locale)
+	base, confidence := language.Make(auth0Locale).Base()
 
-	// Extract the language part (before the hyphen for full locales, or the whole string for simple ones)
-	// Examples: "en-US" -> "en", "es-AR" -> "es", "es" -> "es", "fr" -> "fr"
-	parts := strings.Split(locale, "-")
-	if len(parts) == 0 {
+	// Reject low confidence or unrecognized languages
+	if confidence == language.No || confidence == language.Low {
 		return ""
 	}
 
-	language := parts[0]
-
-	// Map to ZITADEL supported languages
-	// Based on ZITADEL documentation: https://zitadel.com/docs/guides/manage/customize/texts#internationalization--i18n
-	supportedLanguages := map[string]string{
-		"de": "de", // German
-		"en": "en", // English
-		"es": "es", // Spanish
-		"fr": "fr", // French
-		"it": "it", // Italian
-		"ja": "ja", // Japanese
-		"pl": "pl", // Polish
-		"pt": "pt", // Portuguese
-		"ru": "ru", // Russian
-		"zh": "zh", // Chinese
-	}
-
-	if zitadelLang, exists := supportedLanguages[language]; exists {
-		return zitadelLang
-	}
-
-	// If not supported, return empty string (ignore it)
-	return ""
+	return base.String()
 }

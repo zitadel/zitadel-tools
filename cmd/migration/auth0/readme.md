@@ -49,7 +49,7 @@ Data is currently transformed as such:
 | `family_name`               | `lastName`                | Falls back to `name` or `userName` if empty |
 | `name`                      | `displayName`             | Full display name |
 | `nickname`                  | `nickName`                | User's nickname |
-| `locale`                    | `preferredLanguage`       | Mapped from Auth0 locale to ZITADEL language codes¹ |
+| `locale`                    | `preferredLanguage`       | Mapped from Auth0 locale to ZITADEL language codes |
 | `phone_number`              | `phone`                   | User's phone number |
 | `phone_verified`            | `isPhoneVerified`         | Phone verification status |
 | `--email-verified` flag     | `isEmailVerified`         | Email verification (CLI flag only, default: false) |
