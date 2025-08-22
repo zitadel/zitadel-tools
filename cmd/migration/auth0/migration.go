@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/zitadel/zitadel-tools/internal/migration"
+	"golang.org/x/text/language"
 )
 
 // Cmd represents the auth0 migration command
@@ -20,19 +21,27 @@ var Cmd = &cobra.Command{
 var (
 	userPath       string
 	passwordPath   string
-	verifiedEmails bool
+	verifiedEmails *bool
 )
 
 func init() {
 	Cmd.Flags().StringVar(&userPath, "users", "./users.json", "path to the users.json")
 	Cmd.Flags().StringVar(&passwordPath, "passwords", "./passwords.json", "path to the passwords.json")
-	Cmd.Flags().BoolVar(&verifiedEmails, "email-verified", true, "specify if imported emails are automatically verified")
+	verifiedEmails = Cmd.Flags().BoolP("email-verified", "", false, "override email verification status: true=all verified, false=all unverified, unset=use Auth0 data")
 }
 
 type user struct {
-	UserId string `json:"user_id"`
-	Email  string `json:"email"`
-	Name   string `json:"name"`
+	UserId        string `json:"user_id"`        // mandatory
+	Email         string `json:"email"`          // mandatory
+	Name          string `json:"name"`           // optional, maps to displayName
+	Username      string `json:"username"`       // optional
+	GivenName     string `json:"given_name"`     // optional
+	FamilyName    string `json:"family_name"`    // optional
+	Nickname      string `json:"nickname"`       // optional
+	Locale        string `json:"locale"`         // optional
+	PhoneNumber   string `json:"phone_number"`   // optional
+	PhoneVerified bool   `json:"phone_verified"` // optional
+	EmailVerified bool   `json:"email_verified"` // optional
 }
 
 type password struct {
@@ -67,14 +76,58 @@ func migrate() error {
 func createHumanUsers(users []user, passwords []password) []migration.User {
 	result := make([]migration.User, len(users))
 	for i, u := range users {
+		// Use username if available, otherwise fall back to email
+		userName := u.Username
+		if userName == "" {
+			userName = u.Email
+		}
+
+		// Ensure firstName and lastName are always populated (required by ZITADEL)
+		firstName := u.GivenName
+		lastName := u.FamilyName
+
+		// If given_name or family_name are missing, use fallbacks
+		if firstName == "" {
+			if u.Name != "" {
+				firstName = u.Name
+			} else {
+				// Ultimate fallback: derive from email or username
+				firstName = userName
+			}
+		}
+		if lastName == "" {
+			if u.Name != "" {
+				lastName = u.Name
+			} else {
+				// Ultimate fallback: derive from email or username
+				lastName = userName
+			}
+		}
+
+		// Ensure lastName is never empty (ZITADEL requirement)
+		if lastName == "" {
+			lastName = firstName // Use firstName as fallback
+		}
+
+		// Determine email verification status: use Auth0 data unless overridden by flag
+		emailVerified := u.EmailVerified // Default to Auth0 value
+		if verifiedEmails != nil {
+			emailVerified = *verifiedEmails // Override with flag value if set
+		}
+
 		result[i] = migration.User{
 			UserId:        u.UserId,
-			UserName:      u.Email,
-			FirstName:     u.Name,
-			LastName:      u.Name,
+			UserName:      userName,
+			FirstName:     firstName,
+			LastName:      lastName,
 			Email:         u.Email,
-			EmailVerified: verifiedEmails,
+			EmailVerified: emailVerified,
 			PasswordHash:  getPassword(u.Email, passwords),
+			Nickname:      u.Nickname,
+			Name:          u.Name,
+			Locale:        mapAuth0LocaleToZitadelLanguage(u.Locale),
+			PhoneNumber:   u.PhoneNumber,
+			PhoneVerified: u.PhoneVerified,
 		}
 
 	}
@@ -88,4 +141,21 @@ func getPassword(userEmail string, passwords []password) string {
 		}
 	}
 	return ""
+}
+
+// mapAuth0LocaleToZitadelLanguage maps Auth0 locale codes to ZITADEL supported language codes
+// Uses golang.org/x/text/language to parse locales and extract base language tags
+func mapAuth0LocaleToZitadelLanguage(auth0Locale string) string {
+	if auth0Locale == "" {
+		return ""
+	}
+
+	base, confidence := language.Make(auth0Locale).Base()
+
+	// Reject low confidence or unrecognized languages
+	if confidence == language.No || confidence == language.Low {
+		return ""
+	}
+
+	return base.String()
 }
