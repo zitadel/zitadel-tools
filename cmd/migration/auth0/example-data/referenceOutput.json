@@ -1,40 +1,104 @@
 {
-  "dataOrgs":  {
-    "orgs":  [
+  "dataOrgs": {
+    "orgs": [
       {
-        "orgId":  "123",
-        "humanUsers":  [
+        "orgId": "123",
+        "humanUsers": [
           {
-            "userId":  "auth0|6437e9c2b7add15a89b4915b",
-            "user":  {
-              "userName":  "test2@example.com",
-              "profile":  {
-                "firstName":  "Test Example2",
-                "lastName":  "Test Example2"
+            "userId": "auth0|60425dc43519d90068f82973",
+            "user": {
+              "userName": "johndoe",
+              "profile": {
+                "firstName": "John",
+                "lastName": "Doe",
+                "nickName": "johnny",
+                "displayName": "John Doe",
+                "preferredLanguage": "en"
               },
-              "email":  {
-                "email":  "test2@example.com",
-                "isEmailVerified":  true
+              "email": {
+                "email": "john@example.com",
+                "isEmailVerified": true
               },
-              "hashedPassword":  {
-                "value":  "$2b$10$Z6hUTEEeoJXN5/AmSm/4.eZ75RYgFVriQM9LPhNEC7kbAbS/VAaJ2"
+              "phone": {
+                "phone": "+1234567890",
+                "isPhoneVerified": true
+              },
+              "hashedPassword": {
+                "value": "$2b$10$Z6hUTEEeoJXN5/AmSm/4.eZ75RYgFVriQM9LPhNEC7kbAbS/VAaJ2"
               }
             }
           },
           {
-            "userId":  "auth0|6437fa205c7266dc77f88a6c",
-            "user":  {
-              "userName":  "test@example.com",
-              "profile":  {
-                "firstName":  "Test User",
-                "lastName":  "Test User"
+            "userId": "auth0|60425da93519d90068f82966",
+            "user": {
+              "userName": "jane@example.com",
+              "profile": {
+                "firstName": "Jane Smith",
+                "lastName": "Jane Smith",
+                "displayName": "Jane Smith",
+                "preferredLanguage": "fr"
               },
-              "email":  {
-                "email":  "test@example.com",
-                "isEmailVerified":  true
+              "email": {
+                "email": "jane@example.com",
+                "isEmailVerified": true
               },
-              "hashedPassword":  {
-                "value":  "$2b$10$CSZ2JarG4XYbGa.JkfpqnO2wrlbfp5eb5LScHSGo9XGeZ.a.Ic54S"
+              "hashedPassword": {
+                "value": "$2b$10$CSZ2JarG4XYbGa.JkfpqnO2wrlbfp5eb5LScHSGo9XGeZ.a.Ic54S"
+              }
+            }
+          },
+          {
+            "userId": "auth0|60425da93519d90068f82967",
+            "user": {
+              "userName": "minimal@example.com",
+              "profile": {
+                "firstName": "minimal@example.com",
+                "lastName": "minimal@example.com"
+              },
+              "email": {
+                "email": "minimal@example.com",
+                "isEmailVerified": true
+              },
+              "hashedPassword": {
+                "value": "$2b$10$CSZ2JarG4XYbGa.JkfpqnO2wrlbfp5eb5LScHSGo9XGeZ.a.Ic54S"
+              }
+            }
+          },
+          {
+            "userId": "auth0|60425da93519d90068f82968",
+            "user": {
+              "userName": "bobsmith",
+              "profile": {
+                "firstName": "Bob",
+                "lastName": "Smith"
+              },
+              "email": {
+                "email": "bob@example.com",
+                "isEmailVerified": true
+              },
+              "phone": {
+                "phone": "+9876543210"
+              },
+              "hashedPassword": {
+                "value": "$2b$10$CSZ2JarG4XYbGa.JkfpqnO2wrlbfp5eb5LScHSGo9XGeZ.a.Ic54S"
+              }
+            }
+          },
+          {
+            "userId": "auth0|60425da93519d90068f82969",
+            "user": {
+              "userName": "onlyname@example.com",
+              "profile": {
+                "firstName": "Full Name Only",
+                "lastName": "Full Name Only",
+                "displayName": "Full Name Only"
+              },
+              "email": {
+                "email": "onlyname@example.com",
+                "isEmailVerified": true
+              },
+              "hashedPassword": {
+                "value": "$2b$10$CSZ2JarG4XYbGa.JkfpqnO2wrlbfp5eb5LScHSGo9XGeZ.a.Ic54S"
               }
             }
           }
@@ -42,5 +106,5 @@
       }
     ]
   },
-  "timeout":  "30m0s"
+  "timeout": "30m0s"
 }

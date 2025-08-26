@@ -21,9 +21,10 @@ You can specify additional parameters:
  - output path (--output; default is ./importBody.json)
  - timeout for the import data request (--timeout; default is 30m)
  - pretty print the output JSON (--multiline)
+ - email verified (--email-verified) Override email verification status: `true`=all emails verified, `false`=all emails unverified, unset=use Auth0 `email_verified` field 
 
 ```bash
-zitadel-tools migrate auth0 --org=<organisation id> --users=./users.json --passwords=./passwords.json --output=./importBody.json --timeout=1h --multiline
+zitadel-tools migrate auth0 --org=<organisation id> --users=./users.json --passwords=./passwords.json --output=./importBody.json --timeout=1h --multiline --email-verified
 ```
 
 You will now get a new file importBody.json
@@ -36,14 +37,26 @@ https://zitadel.com/docs/guides/migrate/sources/auth0
 
 Data is currently transformed as such:
 
-<!-- TODO: https://github.com/zitadel/zitadel-tools/issues/99 -->
+### User Fields Mapping
 
+| Source (Auth0)              | Destination (ZITADEL)     | Notes |
+| --------------------------- | ------------------------- | ----- |
+| `user_id`                   | `userId`                  | Unique identifier |
+| `email`                     | `email`                   | Primary email address |
+| `email`                     | `userName`                | Used as fallback if `username` is empty |
+| `username`                  | `userName`                | Preferred if available |
+| `given_name`                | `firstName`               | Falls back to `name` or `userName` if empty |
+| `family_name`               | `lastName`                | Falls back to `name` or `userName` if empty |
+| `name`                      | `displayName`             | Full display name |
+| `nickname`                  | `nickName`                | User's nickname |
+| `locale`                    | `preferredLanguage`       | Mapped from Auth0 locale to ZITADEL language codes |
+| `phone_number`              | `phone`                   | User's phone number |
+| `phone_verified`            | `isPhoneVerified`         | Phone verification status |
+| `email_verified`            | `isEmailVerified`         | Email verification status (can be overridden by `--email-verified` flag) |
+| Password hash (from passwords.json) | `hashedPassword` | Bcrypt password hash |
 
-| Source (Auth0)              | Destination (ZITADEL) |
-| --------------------------- | --------------------- |
-| `email`                     | `userName`            |
-| `name`                      | `firstName`           |
-| `name`                      | `lastName`            |
-| `--email-verified` flag[^1] | `isEmailVerified`     |
+### Fallback Logic
 
-[^1]: When the `--email-verified` flag is set, all user emails are considered verified. With this flag unset, all users need to verify their email.
+- **firstName**: `given_name` → `name` → `userName` (email or username)
+- **lastName**: `family_name` → `name` → `userName` (email or username) → `firstName`
+- **userName**: `username` → `email`
