@@ -6,7 +6,7 @@ toolchain go1.24.1
 
 require (
 	github.com/spf13/cobra v1.9.1
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 	github.com/zitadel/oidc/v3 v3.44.0
 	github.com/zitadel/passwap v0.9.0
 	github.com/zitadel/zitadel-go/v3 v3.11.0
