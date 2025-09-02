@@ -37,7 +37,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Tag
         id: semantic
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@v5
         with:
           dry_run: false
           semantic_version: 19.0.2
