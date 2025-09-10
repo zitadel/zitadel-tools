@@ -11,7 +11,7 @@ require (
 	github.com/zitadel/passwap v0.9.0
 	github.com/zitadel/zitadel-go/v3 v3.11.1
 	golang.org/x/text v0.28.0
-	google.golang.org/protobuf v1.36.8
+	google.golang.org/protobuf v1.36.9
 )
 
 require (
