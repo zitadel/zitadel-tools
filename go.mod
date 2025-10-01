@@ -1,6 +1,6 @@
 module github.com/zitadel/zitadel-tools
 
-go 1.23.7
+go 1.24.0
 
 toolchain go1.24.1
 
@@ -10,7 +10,7 @@ require (
 	github.com/zitadel/oidc/v3 v3.44.0
 	github.com/zitadel/passwap v0.9.0
 	github.com/zitadel/zitadel-go/v3 v3.13.0
-	golang.org/x/text v0.28.0
+	golang.org/x/text v0.29.0
 	google.golang.org/protobuf v1.36.9
 )
 
