@@ -116,7 +116,7 @@ func Test_user_getPassword(t *testing.T) {
 			assert.Equal(t, tt.want, got)
 			if tt.want != "" {
 				// check if decoding works as expected.
-				result, err := pbkdf2.Verify(got, "x")
+				result, err := pbkdf2.NewVerifier(pbkdf2.DefaultValidationOpts).Verify(got, "x")
 				require.NoError(t, err)
 				assert.Equal(t, verifier.Fail, result)
 			}
