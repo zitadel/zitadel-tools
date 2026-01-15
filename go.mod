@@ -10,7 +10,7 @@ require (
 	github.com/zitadel/oidc/v3 v3.45.1
 	github.com/zitadel/passwap v0.11.0
 	github.com/zitadel/zitadel-go/v3 v3.23.0
-	golang.org/x/text v0.32.0
+	golang.org/x/text v0.33.0
 	google.golang.org/protobuf v1.36.11
 )
 
