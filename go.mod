@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
-	github.com/zitadel/oidc/v3 v3.48.1
+	github.com/zitadel/oidc/v3 v3.49.1
 	github.com/zitadel/passwap v0.12.1
 	github.com/zitadel/zitadel-go/v3 v3.29.2
 	golang.org/x/text v0.40.0
