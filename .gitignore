@@ -1,2 +1,4 @@
 profile.cov
 .vscode/
+codecov
+codecov.*
