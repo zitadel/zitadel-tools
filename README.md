@@ -15,7 +15,7 @@ Convert a *key file* to *jwt token*
 key2jwt requires two flags:
 
 - audience: where the assertion is going to be used (e.g. https://zitadel.cloud or https://{your domain})
-- key: the path to the key.json
+- key: the path to the key.json / key.pem, or `-` to read the key from stdin
 
 The tool prints the result to standard output.
 
@@ -33,6 +33,18 @@ You can also create a JWT by providing a RSA private key (.pem file). You then a
 ```zsh
 zitadel-tools key2jwt --audience=https://zitadel.cloud --key=key.pem --issuer=client_id
 ```
+
+You can also pass the key via stdin by using `-` as the key path. This is useful when the key comes from a secret manager or another command and should not be written to disk:
+```zsh
+cat key.pem | zitadel-tools key2jwt --audience=https://zitadel.cloud --key=- --issuer=client_id
+```
+
+Alternatively, use process substitution to pass the output of a command as the key:
+```zsh
+zitadel-tools key2jwt --audience=https://zitadel.cloud --key=<(secret-manager read key.pem) --issuer=client_id
+```
+
+Do not pass the key content itself as the flag value (e.g. `--key="$(secret-manager read key.pem)"`). Command-line arguments are visible to other processes and may end up in your shell history.
 
 ## basicauth
 
