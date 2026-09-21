@@ -1,6 +1,6 @@
 module github.com/zitadel/zitadel-tools
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/spf13/cobra v1.10.2
@@ -8,7 +8,7 @@ require (
 	github.com/zitadel/oidc/v3 v3.49.1
 	github.com/zitadel/passwap v0.12.1
 	github.com/zitadel/zitadel-go/v3 v3.29.2
-	golang.org/x/text v0.40.0
+	golang.org/x/text v0.42.0
 	google.golang.org/protobuf v1.36.12
 )
 
