@@ -46,8 +46,8 @@ github.com/stretchr/testify v1.12.1 h1:EuwCh5fleGS7H32xRwO3wRGT7DxrDhLAT6FF8MpWD
 github.com/stretchr/testify v1.12.1/go.mod h1:MDEgiDPPsNp5cuIrHPPCyornHKgEVbtFUmoNlxoYthg=
 github.com/zitadel/oidc/v3 v3.51.3 h1:jkEQ2k60amW6vwvzMwrGO7mw7vGxNp6BSsEH0AH6Gas=
 github.com/zitadel/oidc/v3 v3.51.3/go.mod h1:KQmYte+zOePAeVwR3LM153dxWBC9orWZAIa4w9r1ZhU=
-github.com/zitadel/passwap v0.12.1 h1:QAMccBfdQ2b0hRKXJ/qY4/kdddXkXqlDNXeVwEr2318=
-github.com/zitadel/passwap v0.12.1/go.mod h1:atRozvPTTrwYUJdyxpxoxlIbI6Sr2O/ef/9URcn5EmY=
+github.com/zitadel/passwap v0.13.0 h1:35JdJuf9yJ1VvwTu/6TZrFFVN3/4t7zWbZ+rgKOpjRg=
+github.com/zitadel/passwap v0.13.0/go.mod h1:rZEG0qwS9jcwEpA/KEmT41GH+6k6QJGnnHnwciekKKU=
 github.com/zitadel/schema v1.3.2 h1:gfJvt7dOMfTmxzhscZ9KkapKo3Nei3B6cAxjav+lyjI=
 github.com/zitadel/schema v1.3.2/go.mod h1:IZmdfF9Wu62Zu6tJJTH3UsArevs3Y4smfJIj3L8fzxw=
 github.com/zitadel/zitadel-go/v3 v3.29.4 h1:qbGmWFzazkOqkKtUyrH6huju+BpcYwDa7qm/e2gLZPc=
